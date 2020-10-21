@@ -135,8 +135,8 @@ lgd = legend({'RNN-\texttt{Minimal}','LSTM-\texttt{Minimal}', 'Model-aided', 'RN
 lgd.Interpreter = 'latex';
 grid on;
 
-xlabel('Absolute Error (deg)', "FontSize", XLabelFontSize)
-ylabel('Percentage (%)', "FontSize", YLabelFontSize)
+xlabel('Absolute Error (deg)', "FontSize", XLabelFontSize, "Interpreter", 'latex')
+ylabel('Percentage (\%)', "FontSize", YLabelFontSize, "Interpreter", 'latex')
 
 saveas(gcf,"imgs/total_cdf_alpha.png");
 % print -depsc 'imgs/total_cdf_alpha.eps'
@@ -170,8 +170,8 @@ lgd = legend({'RNN-\texttt{Minimal}', 'LSTM-\texttt{Minimal}', 'Model-aided\text
 lgd.Interpreter = 'latex';
 grid on;
 
-xlabel('Absolute Error (deg)', "FontSize", XLabelFontSize)
-ylabel('Percentage (%)', "FontSize", YLabelFontSize)
+xlabel('Absolute Error (deg)', "FontSize", XLabelFontSize, "Interpreter", 'latex')
+ylabel('Percentage (\%)', "FontSize", YLabelFontSize, "Interpreter", 'latex')
 
 saveas(gcf,"imgs/total_cdf_beta.png");
 % print -depsc 'imgs/total_cdf_beta.eps'

@@ -33,9 +33,9 @@ end
 legend({'${\Omega}^2_1$','$\Omega^2_2$','${\Omega}^2_3$','$\Omega^2_4$','$\Omega^2_5$','$\Omega^2_6$'}, "Interpreter", 'latex','Location','south', 'NumColumns',6, 'FontSize', fs)
 hold off
 
-xlabel('Time (s)', "FontSize", xls)
+xlabel('Time (s)', "FontSize", xls, "Interpreter", 'latex')
 axis([-inf 70 0 1]);
-ylabel('Rotor speed', "FontSize", yls)
+ylabel('Rotor speed', "FontSize", yls, "Interpreter", 'latex')
 saveas(gcf, "imgs/caros_rotor_speed.png")
 % print -depsc 'imgs/caros_rotor_speed.eps'
 
@@ -58,9 +58,9 @@ plot(setpoint(:,1)*10e-7-650,180/pi*(setpoint(:,2)+1)*0.925, '--','LineWidth', l
 % legend('pitch','{\alpha}');
 legend({'$\theta$','$\alpha$'}, "Interpreter", 'latex', 'FontSize', fs)
 
-xlabel('Time (s)', "FontSize", xls)
+xlabel('Time (s)', "FontSize", xls, "Interpreter", 'latex')
 axis([-inf 70 -inf 120]);
-ylabel('Angle (deg)', "FontSize", yls)
+ylabel('Angle (deg)', "FontSize", yls, "Interpreter", 'latex')
 saveas(gcf, "imgs/caros_pitch_alpha.png")
 % print -depsc 'imgs/caros_pitch_alpha.eps'
 %% orientaion
@@ -80,9 +80,9 @@ plot(att(:,1)*10e-7-650,y*180/pi-93, '-.', 'LineWidth', lw, "Color", LineColors(
 % legend('roll','pitch','yaw');
 legend({'$\mathbf{x}_B$-axis angle','$\mathbf{y}_B$-axis angle','$\mathbf{z}_B$-axis angle'}, "Interpreter", 'latex', 'Location','northwest', 'FontSize', fs)
 
-xlabel('Time (s)', "FontSize", xls)
+xlabel('Time (s)', "FontSize", xls, "Interpreter", 'latex')
 axis([-inf 70 -inf 100]);
-ylabel('Angle (deg)', "FontSize", yls)
+ylabel('Angle (deg)', "FontSize", yls, "Interpreter", 'latex')
 saveas(gcf, "imgs/caros_orientation.png")
 % print -depsc 'imgs/caros_orientation.eps'
 %% Pos
@@ -101,8 +101,8 @@ plot(pos(:,1)*10e-7-650,pos(:,3), '--', 'LineWidth', lw, "Color", LineColors(2,:
 plot(pos(:,1)*10e-7-650,-pos(:,4), '-.', 'LineWidth', lw, "Color", LineColors(3,:));
 legend({'$\mathbf{x}_I$','$\mathbf{y}_I$','$-\mathbf{z}_I$'}, "Interpreter", 'latex', 'FontSize', positionfs)
 
-xlabel('Time (s)', "FontSize", xls)
+xlabel('Time (s)', "FontSize", xls, "Interpreter", 'latex')
 axis([-inf 70 -inf inf]);
-ylabel('Position (m)', "FontSize", yls)
+ylabel('Position (m)', "FontSize", yls, "Interpreter", 'latex')
 saveas(gcf, "imgs/caros_position.png")
 % print -depsc 'imgs/caros_position.eps'

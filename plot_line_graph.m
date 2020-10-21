@@ -65,7 +65,7 @@ legend(["\texttt{00}", "\texttt{01}", "\texttt{02}", "\texttt{05}", "\texttt{07}
 grid on;
 xticks([0.05, 0.15, 0.25]);
 title("Preservation Rate [\%]", 'FontSize', titleFontSize, 'interpreter','latex');
-xlabel("ground threshold [m]", 'FontSize', XFontSize );
+xlabel("ground threshold [m]", 'FontSize', XFontSize , "Interpreter", 'latex');
 
 saveas(gcf, "imgs/erasor_ground_preservation.png")
 % print -depsc 'imgs/erasor_ground_preservation.eps'
@@ -89,7 +89,7 @@ legend(["\texttt{00}", "\texttt{01}", "\texttt{02}", "\texttt{05}", "\texttt{07}
 grid on;
 xticks([0.05, 0.15, 0.25]);
 title("Rejection Rate [\%]", 'FontSize', titleFontSize, 'interpreter','latex');
-xlabel("ground threshold [m]", 'FontSize', XFontSize );
+xlabel("ground threshold [m]", 'FontSize', XFontSize , "Interpreter", 'latex');
 
 
 saveas(gcf, "imgs/erasor_ground_rejection.png")
@@ -115,7 +115,7 @@ legend(["\texttt{00}", "\texttt{01}", "\texttt{02}", "\texttt{05}", "\texttt{07}
 grid on;
 xticks([0.05, 0.15, 0.25]);
 title("$\hat{\delta}$ [\%]", 'FontSize', titleFontSize, 'interpreter','latex');
-xlabel("ground threshold [m]", 'FontSize', XFontSize );
+xlabel("ground threshold [m]", 'FontSize', XFontSize , "Interpreter", 'latex');
 
 saveas(gcf, "imgs/erasor_ground_percentage.png")
 % print -depsc 'imgs/erasor_ground_percentage.eps'
@@ -138,7 +138,7 @@ legend(["\texttt{00}", "\texttt{01}", "\texttt{02}", "\texttt{05}", "\texttt{07}
 grid on;
 xticks([0.05, 0.15, 0.25]);
 title("REL", 'FontSize', titleFontSize, 'interpreter','latex');
-xlabel("ground threshold [m]", 'FontSize', XFontSize );
+xlabel("ground threshold [m]", 'FontSize', XFontSize, "Interpreter", 'latex' );
 
 saveas(gcf, "imgs/erasor_ground_rel.png")
 % print -depsc 'imgs/erasor_ground_rel.eps'

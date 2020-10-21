@@ -25,7 +25,7 @@ rot_angle = 20;
 yticks([0, 20, 40, 60, 80, 100]);
 ylim([0 100])
 title("Precision [\%]", "FontSize", 15, "Interpreter", 'latex');
-xlabel("sequence");
+xlabel("sequence", "Interpreter", 'latex');
 margin = 1.0;
 xtips1 = b(1).XEndPoints - 0.05;
 ytips1 = b(1).YEndPoints + margin;

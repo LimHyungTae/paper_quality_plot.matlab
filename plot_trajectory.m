@@ -35,9 +35,9 @@ plot3(Pn(end), Pe(end), Pd(end),"^", "MarkerSize", markersize, 'MarkerFaceColor'
 
 grid on;
 legend({'Start','End'},'Location','northeast', 'FontSize', LegendFontSize);
-xlabel('North [m]', 'fontsize', NLabelFontSize);
-ylabel('East [m]', 'fontsize', ELabelFontSize);
-zlabel('Up [m]', 'fontsize', UpLabelFontSize);
+xlabel('North [m]', 'fontsize', NLabelFontSize, "Interpreter", 'latex');
+ylabel('East [m]', 'fontsize', ELabelFontSize, "Interpreter", 'latex');
+zlabel('Up [m]', 'fontsize', UpLabelFontSize, "Interpreter", 'latex');
 
 saveas(gcf, 'imgs/Navigation_trajectory.png');
 % print -depsc 'imgs/Navigation_trajectory.eps'

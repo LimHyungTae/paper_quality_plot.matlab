@@ -17,8 +17,8 @@ lgd = legend({'Either bin contains dynamic points','Both bins consist only of st
 
 grid on; 
 xticks([0, 0.1, 0.2, 0.3, 0.4 ,0.5, 0.6, 0.7, 0.8, 0.9, 1.0]);
-xlabel('Scan ratio', "FontSize", 15)
-ylabel('Percentage [%]', "FontSize", 15)
+xlabel('Scan ratio', "FontSize", 15, "Interpreter", 'latex')
+ylabel('Percentage [\%]', "FontSize", 15, "Interpreter", 'latex')
 
 saveas(gcf, "imgs/erasor_pdf_diff_percentage.png")
 % print -depsc 'imgs/erasor_pdf_diff_percentage.eps'
