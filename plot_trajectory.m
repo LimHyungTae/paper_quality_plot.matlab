@@ -13,6 +13,8 @@ NLabelFontSize = 14;  ELabelFontSize = 14;  UpLabelFontSize = 14;
 
 %% Colorization - 3D Plot
 figure("Name", '3D Trajectory')
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+
 % ---- Note that if the trajectory is too long, it doesn't work!!! ---- 
 p=plot3(Pn, Pe, Pd,  'LineWidth', linewidth);
 p.Annotation.LegendInformation.IconDisplayStyle = 'off';

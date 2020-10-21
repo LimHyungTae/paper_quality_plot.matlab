@@ -109,7 +109,7 @@ XLabelFontSize = 12;  YLabelFontSize = 12;
 
 %% Draw cdf of alpha: 
 figure("name", "alpha");
-
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
 disp("Drawing cdf of alpha...");
  
 gap = MAX_RANGE / 1000;
@@ -146,8 +146,7 @@ disp("Drawing cdf of alpha complete");
 
 %% Draw cdf of beta: 
 figure("name", "beta");
-%1. Get min-max value
-
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
 MAX_RANGE = 0.05; % --------------- TO BE SET ---------------
 
 disp("Drawing cdf of beta...");

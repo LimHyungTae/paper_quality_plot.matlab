@@ -21,6 +21,8 @@ ms = 11;  % marker size
 
 %% rotor speed
 figure('Position', [0, 0, cs, rs]);
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+
 linecolors = linspecer(6, 'qualitative');
 LineColors = flipud(linecolors);
 for i=1:6
@@ -41,6 +43,8 @@ saveas(gcf, "imgs/caros_rotor_speed.png")
 %% pitch, alp
 disp("pitch alp");
 figure('Position', [0, 1.2*rs, cs, rs]);
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+
 % q=att(:,3:5);
 % q(:,4)=att(:,2);
 [r p y]=quat2angle(att(:,2:5));
@@ -63,6 +67,8 @@ saveas(gcf, "imgs/caros_pitch_alpha.png")
 disp("orientation");
 % hold off
 figure('Position', [0, 2.4*rs, cs, rs]);
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+
 [y p r]=quat2angle(att(:,2:5));
 linecolors = linspecer(3, 'qualitative');
 LineColors = flipud(linecolors);
@@ -83,6 +89,8 @@ saveas(gcf, "imgs/caros_orientation.png")
 disp("pos");
 % hold off
 figure('Position', [0, 3.6*rs, cs, rs]);
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+
 linecolors = linspecer(3, 'qualitative');
 LineColors = flipud(linecolors);
 plot(pos(:,1)*10e-7-650,pos(:,2)-0.2, 'LineWidth', lw, "Color", LineColors(1,:));

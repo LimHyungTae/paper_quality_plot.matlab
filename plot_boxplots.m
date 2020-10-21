@@ -6,6 +6,8 @@ clear all;
 
 %% Calculate AOA errors
 figure()
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+
 disp("Loading boxplot data... (1/2)");
 load('materials/aoa_error.mat', 'aoa_errors_list', 'xlabels');
 mu = 5; % mu takes outlier (red cross) into account
@@ -19,6 +21,8 @@ disp("Done (1/2)");
 
 %% Calculate SSA errors
 figure()
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+
 disp("Loading boxplot data... (2/2)");
 load('materials/ssa_error.mat', 'ssa_errors_list', 'xlabels');
 mu = 9; % mu takes outlier (red cross) into account

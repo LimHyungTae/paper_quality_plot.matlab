@@ -48,6 +48,8 @@ LineColors = flipud(linecolors);
 
 %% Visualization
 fig = figure('Position', [200, 10, imgWidthSize, imgColumnSize]);
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+
 % set(AX1, 'position', [0.05 0.58 0.42 0.42])
 Y = PR;
 plot(x, Y(1,:), '-o', 'LineWidth', lw, 'MarkerSize', ms, 'Color', LineColors(1, :));
@@ -71,6 +73,8 @@ saveas(gcf, "imgs/erasor_ground_preservation.png")
 %%%%%%%%%%%%%%%%%%%
 
 fig = figure('Position', [200 + imgWidthSize, 10, imgWidthSize, imgColumnSize]);
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+
 Y = RR;
 plot(x, Y(1,:), '-o', 'LineWidth', lw, 'MarkerSize', ms, 'Color', LineColors(1, :));
 hold on;
@@ -94,6 +98,7 @@ saveas(gcf, "imgs/erasor_ground_rejection.png")
 
 %%%%%%%%%%%%%%%%%%%
 fig = figure('Position', [200 , 80 + imgColumnSize, imgWidthSize, imgColumnSize]);
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
 
 Y = percentage;
 plot(x, Y(1,:), '-o', 'LineWidth', lw, 'MarkerSize', ms, 'Color', LineColors(1, :));
@@ -117,6 +122,7 @@ saveas(gcf, "imgs/erasor_ground_percentage.png")
 
 %%%%%%%%%%%%%%%%%%%
 fig = figure('Position', [200 + imgWidthSize, 80 + imgColumnSize, imgWidthSize, imgColumnSize]);
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
 
 Y = REL;
 seq00 = plot(x, Y(1,:), '-o', 'LineWidth', lw, 'MarkerSize', ms, 'Color', LineColors(1, :));

@@ -18,6 +18,10 @@ https://kr.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distingu
 
 * how to set legend interpreter as latex
 
+* the method for removing unnecessary white space
+
+Add `set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))` below the figure declaration line.
+
 * tilelayout (Only applicable on latest version Matlab)
 
 All outputs are located in `imgs` folder.
