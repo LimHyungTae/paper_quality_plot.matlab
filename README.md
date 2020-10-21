@@ -38,7 +38,9 @@ Note that the effect of the linespecer which is illustrated as:
 
 ![cdf_beta](./imgs/total_cdf_beta.png)
 
-**linespecer is more beautiful!** I strongly recommend utilizing `linespecer`.
+**linespecer is more beautiful!** It allows the figures to be more clean and improves readability.
+
+So, I strongly recommend utilizing `linespecer`!
 
 Please refer to the line 7 to 9 in `plot_cdf.m`  :) 
 
@@ -49,10 +51,11 @@ Please refer to the line 7 to 9 in `plot_cdf.m`  :)
 
 ## Plot 3D colormap trajectory
 
-
 ![pdf](./imgs/Navigation_trajectory.png)
 
 The trajectory is colored with respect to sequence length.
+
+However, if the trajectory is too long, then it may be not applicable.
 
 ## Tilelayout
 
