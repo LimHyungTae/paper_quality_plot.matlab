@@ -59,8 +59,14 @@ However, if the trajectory is too long, then it may be not applicable.
 
 ## Tilelayout
 
-![caros_tile](.imgs/caros_tile_output.png)
+![caros_tile_output](imgs/caros_tile_output.png)
 
 ## Plot boxplots
 
 ![boxplot1](./imgs/boxplot1.png)
+
+## Line graph
+
+![line1](./imgs/erasor_ground_percentage.png)
+
+![line2](./imgs/erasor_ground_rejection.png)
