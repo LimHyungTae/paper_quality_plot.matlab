@@ -19,7 +19,7 @@ X = reordercats(X,{'00','01','02','05', '07'});
 
 y_s = [precision_seq00;precision_seq01;precision_seq02;precision_seq05;precision_seq07];
 b = bar(X, y_s); %, 'Width', 1.2);
-lgd = legend({'GPF [22]','R-GPF (Ours)'},'Location','southeast','NumColumns',1, 'fontsize', 11);
+lgd = legend({'GPF [22]','R-GPF (Ours)'},'Location','southeast','NumColumns',1, 'fontsize', 11, "Interpreter", 'latex');
 
 rot_angle = 20;
 yticks([0, 20, 40, 60, 80, 100]);

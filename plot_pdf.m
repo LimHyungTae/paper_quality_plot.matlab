@@ -13,7 +13,7 @@ ms = 11;
 [pd,xd] = hist(dyn.diff_percentage); plot(xd,pd/sum(pd), '-o', "MarkerSize", ms, 'LineWidth', 2.25, "Color", LineColors(1,:)); %PDF
 hold on;
 [ps,xs] = hist(stat.diff_percentage); plot(xs,ps/sum(ps), '-s', "MarkerSize", 12, 'LineWidth', 2.25, "Color", [19/255.0, 126/255.0, 153/255.0]); %PDF
-lgd = legend({'Either bin contains dynamic points','Both bins consist only of static points'},'Location','northeast','NumColumns',1, 'fontsize', 11);
+lgd = legend({'Either bin contains dynamic points','Both bins consist only of static points'},'Location','northeast','NumColumns',1, 'fontsize', 11, "Interpreter", 'latex');
 
 grid on; 
 xticks([0, 0.1, 0.2, 0.3, 0.4 ,0.5, 0.6, 0.7, 0.8, 0.9, 1.0]);

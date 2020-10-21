@@ -34,7 +34,7 @@ plot3(Pn(1), Pe(1), Pd(1),"s", "MarkerSize", markersize, 'MarkerFaceColor', Line
 plot3(Pn(end), Pe(end), Pd(end),"^", "MarkerSize", markersize, 'MarkerFaceColor', LineColors(2, :), 'MarkerEdgeColor', LineColors(2, :));
 
 grid on;
-legend({'Start','End'},'Location','northeast', 'FontSize', LegendFontSize);
+legend({'Start','End'},'Location','northeast', 'FontSize', LegendFontSize, "Interpreter", 'latex');
 xlabel('North [m]', 'fontsize', NLabelFontSize, "Interpreter", 'latex');
 ylabel('East [m]', 'fontsize', ELabelFontSize, "Interpreter", 'latex');
 zlabel('Up [m]', 'fontsize', UpLabelFontSize, "Interpreter", 'latex');
