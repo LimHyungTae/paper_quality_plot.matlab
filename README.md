@@ -46,7 +46,7 @@ Note that the effect of the linespecer which is illustrated as:
 
 So, I strongly recommend utilizing `linespecer`!
 
-Please refer to the line 7 to 9 in `plot_cdf.m`  :) 
+Please refer to the line 7 to 9 and 124 to 133 in `plot_cdf.m`  :) 
 
 ## Plot pdf
 
