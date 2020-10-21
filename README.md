@@ -8,21 +8,23 @@ paper_quality_plot.matlab
 
 This repositoy contains 
 
-* color
+* how to use linespecer for beautiful matlab graph
 
 https://kr.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distinguishable-line-colors-colormap
 
-* legend interpreter - latex
+* how to set legend interpreter as latex
 
-* tilelayout (Only applicable on latest Matlab)
+* tilelayout (Only applicable on latest version Matlab)
 
-All outputs are located in imgs
+All outputs are located in `imgs` folder.
 
 ---
 
 # Description
 
 ## Plot cdf
+
+Note that the effect of the linespecer which is illustrated as: 
 
 ### Before linespecer
 
@@ -36,9 +38,9 @@ All outputs are located in imgs
 
 ![cdf_beta](./imgs/total_cdf_beta.png)
 
-linespecer is more beautiful! I strongly recommend utilizing `linespecer`.
+**linespecer is more beautiful!** I strongly recommend utilizing `linespecer`.
 
-Please refer to the line 7 to 9 in `plot_cdf.m` :) 
+Please refer to the line 7 to 9 in `plot_cdf.m`  :) 
 
 ## Plot pdf
 
@@ -54,7 +56,7 @@ The trajectory is colored with respect to sequence length.
 
 ## Tilelayout
 
-![tile](.imgs/caros_tile_output.png)
+![caros_tile](.imgs/caros_tile_output.png)
 
 ## Plot boxplots
 
