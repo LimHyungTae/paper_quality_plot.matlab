@@ -57,9 +57,7 @@ plot(x, Y(3,:), '-d', 'LineWidth', lw, 'MarkerSize', ms, 'Color', LineColors(3, 
 plot(x, Y(4,:), '-^', 'LineWidth', lw, 'MarkerSize', ms, 'Color', LineColors(4, :));
 plot(x, Y(5,:), '-v', 'LineWidth', lw, 'MarkerSize', ms, 'Color', LineColors(5, :));
 
-
 set(gca, 'FontSize', ticksFontSIze);
-
 
 legend(["\texttt{00}", "\texttt{01}", "\texttt{02}", "\texttt{05}", "\texttt{07}"], 'NumColumns', numLgdCol, "Location", "southeast", 'FontSize', lgdFontSize, 'interpreter','latex');
 grid on;

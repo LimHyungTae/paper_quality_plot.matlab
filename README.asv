@@ -36,21 +36,22 @@ All outputs are located in imgs
 
 ![cdf_beta](./imgs/total_cdf_beta.png)
 
-linespecer is more beautiful! I strongly recommend utilizing `linespecer`.
-
-Please refer to the line 7 to 9 in `plot_cdf.m` :) 
+linespecer is more beautiful! I strongly recommend utilizing linespecer
 
 ## Plot pdf
 
-![pdf](./imgs/erasor_pdf_diff_percentage.png)
+![boxplot2](./imgs/boxplot2.png)
 
 
 ## Plot 3D colormap trajectory
 
 
-![pdf](./imgs/Navigation_trajectory.png)
+![mcl](./results/gif/mcl.gif)
 
-The trajectory is colored with respect to sequence length.
+
+## Line graph
+
+![mcl](./results/gif/mcl.gif)
 
 ## Tilelayout
 
@@ -59,3 +60,5 @@ The trajectory is colored with respect to sequence length.
 ## Plot boxplots
 
 ![boxplot1](./imgs/boxplot1.png)
+
+![boxplot2](./imgs/boxplot2.png)
