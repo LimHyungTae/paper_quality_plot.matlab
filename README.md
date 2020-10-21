@@ -2,6 +2,9 @@
 
 All materials are from [Urban Rotobitcs Lab.](http://urobot.kaist.ac.kr/) @KAIST
 
+Original author: Hyungtae Lim (shapelim@kaist.ac.kr)
+Advisers: Giseop Kim (paulgkim@kaist.ac.kr), Byeongho YU (bhyu@kaist.ac.kr) 
+
 ---
 
 # Introduction
@@ -26,13 +29,13 @@ All outputs are located in `imgs` folder.
 
 Note that the effect of the linespecer which is illustrated as: 
 
-### Before linespecer
+### Before using linespecer
 
 ![cdf_alpha_before](./imgs/total_cdf_alpha_before.png)
 
 ![cdf_beta_before](./imgs/total_cdf_beta_before.png)
 
-### After linespecer
+### After using linespecer
 
 ![cdf_alpha](./imgs/total_cdf_alpha.png)
 
