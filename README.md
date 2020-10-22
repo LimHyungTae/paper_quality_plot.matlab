@@ -1,6 +1,6 @@
 # paper_quality_plot.matlab
 
-All materials are from [Urban Rotobitcs Lab.](http://urobot.kaist.ac.kr/) @KAIST
+All materials are from [Urban Robotics Lab.](http://urobot.kaist.ac.kr/) @KAIST
 
 Original author: Hyungtae Lim (shapelim@kaist.ac.kr)
 
