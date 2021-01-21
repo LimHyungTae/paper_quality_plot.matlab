@@ -24,7 +24,7 @@ Add `set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))` below the figure d
 
 * the method for changing the default tick fonts to the latex version
 
-`set(groot, 'defaultAxesTickLabelInterpreter','latex');` below the figure declaration line.
+Add `set(groot, 'defaultAxesTickLabelInterpreter','latex');` below the figure declaration line.
 
 * tilelayout (Only applicable on latest version Matlab)
 
