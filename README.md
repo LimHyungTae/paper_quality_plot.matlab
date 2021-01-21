@@ -22,6 +22,10 @@ https://kr.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distingu
 
 Add `set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))` below the figure declaration line.
 
+* the method for changing the default tick fonts to the latex version
+
+`set(groot, 'defaultAxesTickLabelInterpreter','latex');` below the figure declaration line.
+
 * tilelayout (Only applicable on latest version Matlab)
 
 All outputs are located in `imgs` folder.
