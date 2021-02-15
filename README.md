@@ -20,13 +20,16 @@ https://kr.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distingu
 
 * the method for removing unnecessary white space
 
-Add `set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))` below the figure declaration line.
+:point_right: Add `set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))` below the figure declaration line.
 
 * the method for changing the default tick fonts to the latex version
 
-Add `set(groot, 'defaultAxesTickLabelInterpreter','latex');` below the figure declaration line.
+:point_right: Add `set(groot, 'defaultAxesTickLabelInterpreter','latex');` below the figure declaration line.
 
 * tilelayout (Only applicable on latest version Matlab)
+
+* thousand seperator 
+:point_right: Add `ytickformat('%,4.4g');` after plot command.
 
 All outputs are located in `imgs` folder.
 
