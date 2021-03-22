@@ -38,7 +38,7 @@ All outputs are located in `imgs` folder.
 
 # Description
 
-## Plot cdf
+## [Plot cdf](plot_cdf.m)
 
 Note that the effect of the linespecer which is illustrated as: 
 
