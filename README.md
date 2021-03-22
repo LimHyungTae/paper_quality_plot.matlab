@@ -39,10 +39,6 @@ All outputs are located in `imgs` folder.
 
 The template is available on [here](template.m)
 
----
-# Template
-
-Click [here](template.m)
 
 ---
 
