@@ -20,19 +20,29 @@ https://kr.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distingu
 
 * the method for removing unnecessary white space
 
-:point_right: Add `set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))` below the figure declaration line.
-
 * the method for changing the default tick fonts to the latex version
-
-:point_right: Add `set(groot, 'defaultAxesTickLabelInterpreter','latex');` below the figure declaration line.
 
 * tilelayout (Only applicable on latest version Matlab)
 
 * thousand seperator 
 
-:point_right: Add `ytickformat('%,4.4g');` after plot command.
-
 All outputs are located in `imgs` folder.
+
+---
+# Must be added for the Paper-quality Figures
+
+:point_right: Add `set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))` below the figure declaration line.
+
+:point_right: Add `set(groot, 'defaultAxesTickLabelInterpreter','latex');` below the figure declaration line.
+
+:point_right: Add `ytickformat('%,4.4g');` after **plot( ) command** (optional).
+
+The template is available on [here](template.m)
+
+---
+# Template
+
+Click [here](template.m)
 
 ---
 
@@ -60,12 +70,13 @@ So, I strongly recommend utilizing `linespecer`!
 
 Please refer to the line 7 to 9 and 124 to 133 in `plot_cdf.m`  :) 
 
-## Plot pdf
+## [Plot pdf](plot_pdf.m)
 
 ![pdf](./imgs/erasor_pdf_diff_percentage.png)
 
+Note that the built-in pdf function of matlab does not work sometimes. My method is better!
 
-## Plot 3D colormap trajectory
+## [Plot 3D colormap trajectory](plot_trajectory.m)
 
 ![pdf](./imgs/Navigation_trajectory.png)
 
@@ -77,7 +88,7 @@ However, if the trajectory is too long, then it may be not applicable.
 
 ![caros_tile_output](imgs/caros_tile_output.png)
 
-## Plot boxplots
+## [Plot boxplots](plot_boxplots.m)
 
 ![boxplot1](./imgs/boxplot1.png)
 
@@ -85,7 +96,7 @@ However, if the trajectory is too long, then it may be not applicable.
 
 ![barplot](./imgs/ground_bar_plot_v2.png)
 
-## Line graph
+## [Line graph](plot_line_graph.m)
 
 ![line1](./imgs/erasor_ground_percentage.png)
 

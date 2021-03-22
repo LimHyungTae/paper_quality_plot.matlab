@@ -110,6 +110,7 @@ XLabelFontSize = 12;  YLabelFontSize = 12;
 %% Draw cdf of alpha: 
 figure("name", "alpha");
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
 disp("Drawing cdf of alpha...");
  
 gap = MAX_RANGE / 1000;
@@ -147,6 +148,7 @@ disp("Drawing cdf of alpha complete");
 %% Draw cdf of beta: 
 figure("name", "beta");
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
 MAX_RANGE = 0.05; % --------------- TO BE SET ---------------
 
 disp("Drawing cdf of beta...");
@@ -174,8 +176,6 @@ xlabel('Absolute Error (deg)', "FontSize", XLabelFontSize, "Interpreter", 'latex
 ylabel('Percentage (\%)', "FontSize", YLabelFontSize, "Interpreter", 'latex')
 
 saveas(gcf,"imgs/total_cdf_beta.png");
-% print -depsc 'imgs/total_cdf_beta.eps'
-
 disp("Drawing cdf of beta complete");
 
 

@@ -13,7 +13,8 @@ NLabelFontSize = 14;  ELabelFontSize = 14;  UpLabelFontSize = 14;
 
 %% Colorization - 3D Plot
 figure("Name", '3D Trajectory')
-set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02));
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
 
 % ---- Note that if the trajectory is too long, it doesn't work!!! ---- 
 p=plot3(Pn, Pe, Pd,  'LineWidth', linewidth);
@@ -38,7 +39,8 @@ legend({'Start','End'},'Location','northeast', 'FontSize', LegendFontSize, "Inte
 xlabel('North [m]', 'fontsize', NLabelFontSize, "Interpreter", 'latex');
 ylabel('East [m]', 'fontsize', ELabelFontSize, "Interpreter", 'latex');
 zlabel('Up [m]', 'fontsize', UpLabelFontSize, "Interpreter", 'latex');
-
+xtickformat('%,4.4g');
+ytickformat('%,4.4g');
 saveas(gcf, 'imgs/Navigation_trajectory.png');
 % print -depsc 'imgs/Navigation_trajectory.eps'
 

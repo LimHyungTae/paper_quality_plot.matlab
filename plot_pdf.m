@@ -8,7 +8,8 @@ linecolors = linspecer(2, 'qualitative');
 LineColors = flipud(linecolors);
 
 figure('Position', [500, 300, 600, 360]);
-set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02));
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
 ms = 11;
 [pd,xd] = hist(dyn.diff_percentage); plot(xd,pd/sum(pd), '-o', "MarkerSize", ms, 'LineWidth', 2.25, "Color", LineColors(1,:)); %PDF
 hold on;

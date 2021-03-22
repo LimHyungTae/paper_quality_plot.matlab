@@ -3,11 +3,7 @@ clc;
 close all;
 clear all;
 
-out=readmatrix('materials/caros/actuator_outputs_0');
-setpoint=readmatrix('materials/caros/manual_control_setpoint_0');
-att=readmatrix('materials/caros/vehicle_attitude_0');
-pos=readmatrix('materials/caros/vehicle_local_position_0');
-
+load materials/caros/plot_data.mat
 %% Params
 rs = 200;
 cs = 700;
@@ -21,8 +17,8 @@ ms = 11;  % marker size
 
 %% rotor speed
 figure('Position', [0, 0, cs, rs]);
-set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
-
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02));
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
 linecolors = linspecer(6, 'qualitative');
 LineColors = flipud(linecolors);
 for i=1:6
@@ -44,18 +40,16 @@ saveas(gcf, "imgs/caros_rotor_speed.png")
 disp("pitch alp");
 figure('Position', [0, 1.2*rs, cs, rs]);
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
-
-% q=att(:,3:5);
-% q(:,4)=att(:,2);
-[r p y]=quat2angle(att(:,2:5));
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
 linecolors = linspecer(2, 'qualitative');
 LineColors = flipud(linecolors);
-mkidx = 200;
-plot(att(:,1)*10e-7-650,p*180/pi*1.09, 'LineWidth', lw, "Color", LineColors(1,:));
+% 
+
+plot(x2_1, y2_1, 'LineWidth', lw, "Color", LineColors(1,:));
 hold on
 grid on
-plot(setpoint(:,1)*10e-7-650,180/pi*(setpoint(:,2)+1)*0.925, '--','LineWidth', lw, "Color", LineColors(2,:));
-% legend('pitch','{\alpha}');
+plot(x2_2, y2_2, '--','LineWidth', lw, "Color", LineColors(2,:));
+
 legend({'$\theta$','$\alpha$'}, "Interpreter", 'latex', 'FontSize', fs)
 
 xlabel('Time (s)', "FontSize", xls, "Interpreter", 'latex')
@@ -68,16 +62,17 @@ disp("orientation");
 % hold off
 figure('Position', [0, 2.4*rs, cs, rs]);
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
 
-[y p r]=quat2angle(att(:,2:5));
 linecolors = linspecer(3, 'qualitative');
 LineColors = flipud(linecolors);
-plot(att(:,1)*10e-7-650,r*180/pi, 'LineWidth', lw, "Color", LineColors(1,:));
+
+plot(x3, y3_1, 'LineWidth', lw, "Color", LineColors(1,:));
 hold on
 grid on
-plot(att(:,1)*10e-7-650,p*180/pi*1.09, '--', 'LineWidth', lw, "Color", LineColors(2,:));
-plot(att(:,1)*10e-7-650,y*180/pi-93, '-.', 'LineWidth', lw, "Color", LineColors(3,:));
-% legend('roll','pitch','yaw');
+plot(x3, y3_2, '--', 'LineWidth', lw, "Color", LineColors(2,:));
+plot(x3, y3_3, '-.', 'LineWidth', lw, "Color", LineColors(3,:));
+
 legend({'$\mathbf{x}_B$-axis angle','$\mathbf{y}_B$-axis angle','$\mathbf{z}_B$-axis angle'}, "Interpreter", 'latex', 'Location','northwest', 'FontSize', fs)
 
 xlabel('Time (s)', "FontSize", xls, "Interpreter", 'latex')
@@ -90,15 +85,18 @@ disp("pos");
 % hold off
 figure('Position', [0, 3.6*rs, cs, rs]);
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
-
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
 linecolors = linspecer(3, 'qualitative');
 LineColors = flipud(linecolors);
-plot(pos(:,1)*10e-7-650,pos(:,2)-0.2, 'LineWidth', lw, "Color", LineColors(1,:));
+
+plot(x4, y4_1, 'LineWidth', lw, "Color", LineColors(1,:));
 hold on
 grid on
 
-plot(pos(:,1)*10e-7-650,pos(:,3), '--', 'LineWidth', lw, "Color", LineColors(2,:));
-plot(pos(:,1)*10e-7-650,-pos(:,4), '-.', 'LineWidth', lw, "Color", LineColors(3,:));
+plot(x4, y4_2, '--', 'LineWidth', lw, "Color", LineColors(2,:));
+plot(x4, y4_3, '-.', 'LineWidth', lw, "Color", LineColors(3,:));
+
+
 legend({'$\mathbf{x}_I$','$\mathbf{y}_I$','$-\mathbf{z}_I$'}, "Interpreter", 'latex', 'FontSize', positionfs)
 
 xlabel('Time (s)', "FontSize", xls, "Interpreter", 'latex')

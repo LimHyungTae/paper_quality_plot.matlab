@@ -6,7 +6,7 @@ set(groot, 'defaultAxesTickLabelInterpreter','latex'); %set(groot, 'defaultLegen
 %% Bar plot
 figure('Position', [500, 300, 600, 340]);
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
-
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
 % Presicion of GPF vs R-GPF
 
 precision_seq00 = [26.23 87.63];
