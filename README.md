@@ -80,20 +80,28 @@ The trajectory is colored with respect to sequence length.
 
 However, if the trajectory is too long, then it may be not applicable.
 
-## Tilelayout
+## [Line graph1](plot_linegraph1.m)
 
 ![caros_tile_output](imgs/caros_tile_output.png)
+
+## [Line graph2](plot_linegraph2.m)
+
+![line1](./imgs/erasor_ground_percentage.png)
+
+![line2](./imgs/erasor_ground_rejection.png)
 
 ## [Plot boxplots](plot_boxplots.m)
 
 ![boxplot1](./imgs/boxplot1.png)
 
-## Plot barplot
+## [Plot barplot](plot_barplot.m)
+
+Only available on **R2020a**.
 
 ![barplot](./imgs/ground_bar_plot_v2.png)
 
-## [Line graph](plot_line_graph.m)
+## [Tilelayout](plot_tilelayout.m)
 
-![line1](./imgs/erasor_ground_percentage.png)
+Only available on **R2020a**.
 
-![line2](./imgs/erasor_ground_rejection.png)
+![tilelayout](./imgs/final_tilelayout.png)
