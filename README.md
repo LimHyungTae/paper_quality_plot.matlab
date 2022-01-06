@@ -39,6 +39,18 @@ All outputs are located in `imgs` folder.
 
 The template is available on [here](template.m)
 
+---
+
+# When it comesto saving figures in eps...
+
+I realized that some matlab figures (e.g., bar plot, tiles) are not available to save the format in `.eps`
+
+So, we must use below command as follows:
+
+```
+% gcf: figure object
+print(gcf, "SET_YOUR_FINENAME.png",'-dpng','-r200'); 
+```
 
 ---
 
