@@ -41,16 +41,29 @@ The template is available on [here](template.m)
 
 ---
 
-# When it comesto saving figures in eps...
+# When it comes to saving figures in eps...
 
-I realized that some matlab figures (e.g., bar plot, tiles) are not available to save the format in `.eps`
+ENG) I realized that some matlab figures (e.g., bar plot, tiles, or 3D plot) can not be saved in the vector format even though the file format is saved into `.eps`.
 
 So, we must use below command as follows:
 
 ```
 % gcf: figure object
+% -r${NUM}: The larger, the higher resolution
 print(gcf, "SET_YOUR_FINENAME.png",'-dpng','-r200'); 
 ```
+
+KOR) Matlab에서 원래 eps로 저장하면 자동으로 그림이 vector format으로 변경되어야 하는데, 그렇지 않은 경우가 있습니다.
+
+그럴 경우에는 아래와 같이 dpi를 조정하여 png로 논문에 넣을 수 밖에 없습니다.
+
+
+```
+% gcf: figure object
+% -r${NUM}: The larger, the higher resolution
+print(gcf, "SET_YOUR_FINENAME.png",'-dpng','-r200'); 
+```
+
 
 ---
 
