@@ -107,7 +107,13 @@ However, if the trajectory is too long, then it may be not applicable.
 
 ## [Line graph1](plot_linegraph1.m)
 
-![caros_tile_output](imgs/caros_tile_output.png)
+![caros_tile_output1](imgs/caros_rotor_speed.png)
+
+![caros_tile_output2](imgs/caros_pitch_alpha.png)
+
+![caros_tile_output3](imgs/caros_orientation.png)
+
+![caros_tile_output4](imgs/caros_position.png)
 
 ## [Line graph2](plot_linegraph2.m)
 
@@ -119,6 +125,8 @@ However, if the trajectory is too long, then it may be not applicable.
 
 ![boxplot1](./imgs/boxplot1.png)
 
+**ToDo.** Set the fonts of ticks as Times New Roman
+
 ## [Plot barplot](plot_barplot.m)
 
 Only available on **R2020a**.
@@ -128,5 +136,7 @@ Only available on **R2020a**.
 ## [Tilelayout](plot_tilelayout.m)
 
 Only available on **R2020a**.
+
+**ToDo.** Set the fonts of ticks as Times New Roman
 
 ![tilelayout](./imgs/final_tilelayout.png)

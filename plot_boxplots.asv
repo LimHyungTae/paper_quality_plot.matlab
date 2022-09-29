@@ -17,7 +17,7 @@ xlabel('Sequence Length', "Interpreter", 'latex');
 ylabel('Error [rad]', "Interpreter", 'latex');
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 
-saveas(gcf, "imgs/boxplot1.png", '-dpng', '-r300');
+saveas(gcf,"imgs/boxplot1.png");
 disp("Done (1/2)");
 
 %% Calculate SSA errors
@@ -32,5 +32,6 @@ title('Error of Sideslip Angle (SSA) based on sequence length', "Interpreter", '
 xlabel('Sequence Length', "Interpreter", 'latex');
 ylabel('Error [rad]', "Interpreter", 'latex');
 
-saveas(gcf, "imgs/boxplot2.png", '-dpng', '-r300');
+
+saveas(gcf,"imgs/boxplot2.png");
 disp("Done (2/2)");
