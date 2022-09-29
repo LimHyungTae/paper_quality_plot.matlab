@@ -121,11 +121,11 @@ However, if the trajectory is too long, then it may be not applicable.
 
 ![line2](./imgs/erasor_ground_rejection.png)
 
-## [Plot boxplots improved)](plot_boxplot2.m)
+## [Plot boxplots (improved)](plot_boxplot2.m)
 
 Note that [multiple_boxplot_time.m](multiple_boxplot_time.m) function is required
 
-![boxplot2](./imgs/boxplot2.png)
+![boxplot2](./imgs/box_plot2_r300.png)
 
 ## [Plot boxplots](plot_boxplots.m)
 
