@@ -105,6 +105,10 @@ The trajectory is colored with respect to sequence length.
 
 However, if the trajectory is too long, then it may be not applicable.
 
+## [Plot scatter w/ heatmap](plot_scatter_w_heatmap.m)
+
+![plot_scatter_w_heatmap](imgs/tims_rotation_v30.png)
+
 ## [Line graph1](plot_linegraph1.m)
 
 ![caros_tile_output1](imgs/caros_rotor_speed.png)
