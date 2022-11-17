@@ -153,4 +153,4 @@ Only available on **R2020a**.
 
 ## [Stacked time plot](plot_time_stacked.m)
 
-!(plot_time_stacked)(./imgs/time_stacked.png)
+![plot_time_stacked](./imgs/time_stacked.png)
