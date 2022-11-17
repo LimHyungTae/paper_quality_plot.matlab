@@ -150,3 +150,7 @@ Only available on **R2020a**.
 **ToDo.** Set the fonts of ticks as Times New Roman
 
 ![tilelayout](./imgs/final_tilelayout.png)
+
+## [Stacked time plot](plot_time_stacked.m)
+
+!(plot_time_stacked.m)(./imgs/time_stacked.png)
