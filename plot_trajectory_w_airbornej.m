@@ -6,8 +6,14 @@ clear all;
 % file_path = 'materials/vbr_traj/spagna_train0_gt.txt';
 %file_path = 'materials/vbr_traj/colosseo_train0_gt.txt';
 % file_path = 'materials/vbr_traj/pincio_train0_gt.txt';
-file_path = 'materials/vbr_traj/diag_train0_gt.txt';
+%file_path = 'materials/vbr_traj/diag_train0_gt.txt';
 %file_path = 'materials/vbr_traj/ciampino_train0_gt.txt';
+
+% Just for visualization
+% file_path = 'materials/vbr_traj/campus_train0_gt.txt';
+% file_path = 'materials/vbr_traj/campus_train1_gt.txt';
+file_path = 'materials/vbr_traj/ciampino_train1_gt.txt';
+
 file_id = fopen(file_path, 'r');
 
 % 데이터 읽기
@@ -74,10 +80,16 @@ ztickformat('%,4.4g');
 
 if strcmp(file_path, 'materials/vbr_traj/campus_train0_gt.txt')
     print(gcf, "imgs/campus_train0_gt.png", '-dpng', '-r300');
-    % print('-depsc2', 'output/campus_train0_gt.eps', '-r300');
+    print('-depsc2', 'imgs/campus_train0_gt.eps', '-r300');
+elseif strcmp(file_path, 'materials/vbr_traj/ciampino_train1_gt.txt')
+    print(gcf, "imgs/ciampino_train1_gt.png", '-dpng', '-r300');
+    print('-depsc2', 'imgs/ciampino_train1_gt.eps', '-r300');
 elseif strcmp(file_path, 'materials/vbr_traj/ciampino_train0_gt.txt')
     print(gcf, "imgs/ciampino_train0_gt.png", '-dpng', '-r300');
     print('-depsc2', 'imgs/ciampino_train0_gt.eps', '-r300');
+elseif strcmp(file_path, 'materials/vbr_traj/ciampino_train1_gt.txt')
+    print(gcf, "imgs/ciampino_train1_gt.png", '-dpng', '-r300');
+    print('-depsc2', 'imgs/ciampino_train1_gt.eps', '-r300');
 elseif strcmp(file_path, 'materials/vbr_traj/spagna_train0_gt.txt')
     print(gcf, "imgs/spagna_train0_gt.png", '-dpng', '-r300');
     print('-depsc2', 'imgs/spagna_train0_gt.eps', '-r300');
@@ -132,9 +144,15 @@ ytickformat('%,4.4g');
 
 if strcmp(file_path, 'materials/vbr_traj/campus_train0_gt.txt')
     print(gcf, "imgs/campus_train0_gt.png", '-dpng', '-r300');
-    % print('-depsc2', 'imgs/campus_train0_gt.eps', '-r300');
+    print('-depsc2', 'imgs/campus_train0_gt.eps', '-r300');
+elseif strcmp(file_path, 'materials/vbr_traj/campus_train1_gt.txt')
+    print(gcf, "imgs/campus_train1_gt_2D.png", '-dpng', '-r300');
+    print('-depsc2', 'imgs/campus_train1_gt_2D.eps', '-r300');
 elseif strcmp(file_path, 'materials/vbr_traj/ciampino_train0_gt.txt')
     print(gcf, "imgs/ciampino_train0_gt_2D.png", '-dpng', '-r300');
+elseif strcmp(file_path, 'materials/vbr_traj/ciampino_train1_gt.txt')
+    print(gcf, "imgs/ciampino_train1_gt_2D.png", '-dpng', '-r300');
+    print('-depsc2', 'imgs/ciampino_train1_gt_2D.eps', '-r300');
     print('-depsc2', 'imgs/ciampino_train0_gt_2D.eps', '-r300');
 elseif strcmp(file_path, 'materials/vbr_traj/spagna_train0_gt.txt')
     print(gcf, "imgs/spagna_train0_gt_2D.png", '-dpng', '-r300');
