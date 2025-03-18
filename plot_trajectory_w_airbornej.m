@@ -6,13 +6,13 @@ clear all;
 % file_path = 'materials/vbr_traj/spagna_train0_gt.txt';
 %file_path = 'materials/vbr_traj/colosseo_train0_gt.txt';
 % file_path = 'materials/vbr_traj/pincio_train0_gt.txt';
-%file_path = 'materials/vbr_traj/diag_train0_gt.txt';
+file_path = 'materials/vbr_traj/diag_train0_gt.txt';
 %file_path = 'materials/vbr_traj/ciampino_train0_gt.txt';
 
 % Just for visualization
 % file_path = 'materials/vbr_traj/campus_train0_gt.txt';
 % file_path = 'materials/vbr_traj/campus_train1_gt.txt';
-file_path = 'materials/vbr_traj/ciampino_train1_gt.txt';
+% file_path = 'materials/vbr_traj/ciampino_train1_gt.txt'; % Note, it's totally different from `ciampino_train0_gt`
 
 file_id = fopen(file_path, 'r');
 
