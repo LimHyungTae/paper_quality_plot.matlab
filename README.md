@@ -52,7 +52,7 @@ So, we must use below command as follows:
 ```
 % gcf: figure object
 % -r${NUM}: The larger, the higher resolution
-print(gcf, "SET_YOUR_FINENAME.png",'-dpng','-r200'); 
+print(gcf, "SET_YOUR_FINENAME.png",'-dpng','-r300'); 
 ```
 
 KOR) Matlab에서 원래 eps로 저장하면 자동으로 그림이 vector format으로 변경되어야 하는데, 그렇지 않은 경우가 있습니다.
@@ -63,7 +63,7 @@ KOR) Matlab에서 원래 eps로 저장하면 자동으로 그림이 vector forma
 ```
 % gcf: figure object
 % -r${NUM}: The larger, the higher resolution
-print(gcf, "SET_YOUR_FINENAME.png",'-dpng','-r200'); 
+print(gcf, "SET_YOUR_FINENAME.png",'-dpng','-r300'); 
 ```
 
 
