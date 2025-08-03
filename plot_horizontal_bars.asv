@@ -47,9 +47,8 @@ b(2).CData = sota_colors;
 % Set axis labels and formatting
 yticklabels({'W/ Ours', 'W/ Contextrast [51]', 'W/ Multi [50]'});
 ax.YAxis.FontSize = yaxis_size;
-ax.XAxis.FontSize = 25;
 xlabel("mIoU\,(\%)\,$\uparrow$ ", 'interpreter', 'latex', "FontSize", 28);
-xlim([76.0 80.0]);
+xlim([76.5 79.5]);
 % --- Add legend for each FPS color ---
 hold on;
 legend_labels = {'DeepLabV3 [18]$\;$', 'Multi [50]$\;$', 'Contextrast [51]$\;$', 'Contextrast++ (Ours)'}; % Legend labels
@@ -99,10 +98,10 @@ b(2).CData = sota_colors;
 
 % Set axis labels and formatting
 yticklabels({'W/ Ours', 'W/ Contextrast [51]', 'W/ Multi [50]'});
-ax.YAxis.FontSize = yaxis_size;
+ ax.YAxis.FontSize = 25;
 ax.XAxis.FontSize = 25;
 xlabel("mIoU\,(\%)\,$\uparrow$ ", 'interpreter', 'latex', "FontSize", 28);
-xlim([75.0 80.0]);
+xlim([75.5 79.5]);
 % --- Add legend for each FPS color ---
 hold on;
 legend_labels = {'HRNet [27]$\;$', 'Multi [50]$\;$', 'Contextrast [51]$\;$', 'Contextrast++ (Ours)'}; % Legend labels
@@ -152,10 +151,10 @@ b(2).CData = sota_colors;
 
 % Set axis labels and formatting
 yticklabels({'W/ Ours', 'W/ Contextrast [51]', 'W/ Multi [50]'});
-ax.YAxis.FontSize = yaxis_size;
+ ax.YAxis.FontSize = 25;
 ax.XAxis.FontSize = 25;
 xlabel("mIoU\,(\%)\,$\uparrow$ ", 'interpreter', 'latex', "FontSize", 28);
-xlim([78.5 81.0]);
+xlim([78.75 80.5]);
 % --- Add legend for each FPS color ---
 hold on;
 legend_labels = {'OCRNet [30]$\;$', 'Multi [50]$\;$', 'Contextrast [51]$\;$', 'Contextrast++ (Ours)'}; % Legend labels
@@ -205,13 +204,13 @@ b(2).CData = sota_colors;
 
 % Set axis labels and formatting
 yticklabels({'W/ Ours', 'W/ Contextrast [51]', 'W/ Multi [50]'});
-ax.YAxis.FontSize = yaxis_size;
+ ax.YAxis.FontSize = 25;
 ax.XAxis.FontSize = 25;
 xlabel("mIoU\,(\%)\,$\uparrow$ ", 'interpreter', 'latex', "FontSize", 28);
-xlim([75.0 76.5]);
+xlim([75.0 76.25]);
 % --- Add legend for each FPS color ---
 hold on;
-legend_labels = {'UPerNet [22]$\;$', 'Multi [50]$\;$', 'Contextrast [51]$\;$', 'Contextrast++ (Ours)'}; % Legend labels
+legend_labels = {'UperNet [22]$\;$', 'Multi [50]$\;$', 'Contextrast [51]$\;$', 'Contextrast++ (Ours)'}; % Legend labels
 
 % Create dummy bars for the legend
 legend_handles = gobjects(1, length(legend_labels)); % Empty object array
