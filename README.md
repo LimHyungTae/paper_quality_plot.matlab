@@ -2,10 +2,6 @@
 
 All materials are from [Urban Robotics Lab.](http://urobot.kaist.ac.kr/) @KAIST
 
-Original author: Hyungtae Lim (shapelim@kaist.ac.kr)
-
-Advisers: Giseop Kim (paulgkim@kaist.ac.kr), Byeongho YU (bhyu@kaist.ac.kr) 
-
 **(01.09.25)** I have now given up on sticking solely to MATLAB. [SciencePlots](https://github.com/garrettj403/SciencePlots) is truly an excellent tool.
 
 ---
