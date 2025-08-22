@@ -1,30 +1,80 @@
-# paper_quality_plot.matlab
-
-All materials are from [Urban Robotics Lab.](http://urobot.kaist.ac.kr/) @KAIST
-
-**(01.09.25)** I have now given up on sticking solely to MATLAB. [SciencePlots](https://github.com/garrettj403/SciencePlots) is truly an excellent tool.
+<div align="center">
+    <h1>Paper Quality Plot for MATLAB</h1>
+    <a href="https://www.mathworks.com/products/matlab.html"><img src="https://img.shields.io/badge/MATLAB-R2020a+-orange?logo=mathworks" /></a>
+    <!-- <a href="http://urobot.kaist.ac.kr/"><img src="https://img.shields.io/badge/Urban_Robotics_Lab-KAIST-red" /></a> -->
+    <br />
+    <br />
+    <p><strong><em>Create publication-ready figures with beautiful MATLAB visualizations.</em></strong></p>
+    <br />
+</div>
 
 ---
 
-# Introduction
+## ✨ Sample Gallery
 
-This repositoy contains 
+<div align="center">
+    <table>
+        <tr>
+            <td align="center">
+                <img src="./imgs/total_cdf_alpha.png" width="250px" alt="CDF Plot"/>
+                <br/><b>CDF Visualization</b>
+            </td>
+            <td align="center">
+                <img src="./imgs/Navigation_trajectory.png" width="250px" alt="3D Trajectory"/>
+                <br/><b>3D Trajectory</b>
+            </td>
+            <td align="center">
+                <img src="./imgs/tims_rotation_v30.png" width="250px" alt="Scatter Heatmap"/>
+                <br/><b>Scatter w/ Heatmap</b>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <img src="./imgs/box_plot2_r300.png" width="250px" alt="Box Plot"/>
+                <br/><b>Advanced Boxplot</b>
+            </td>
+            <td align="center">
+                <img src="./imgs/ground_bar_plot_v2.png" width="250px" alt="Bar Plot"/>
+                <br/><b>Publication Bar Plot</b>
+            </td>
+            <td align="center">
+                <img src="./imgs/final_tilelayout.png" width="250px" alt="Tile Layout"/>
+                <br/><b>Tile Layout</b>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <img src="./imgs/erasor_pdf_diff_percentage.png" width="250px" alt="PDF Plot"/>
+                <br/><b>PDF Visualization</b>
+            </td>
+            <td align="center">
+                <img src="./imgs/caros_rotor_speed.png" width="250px" alt="Line Graph"/>
+                <br/><b>Line Graph</b>
+            </td>
+            <td align="center">
+                <img src="./imgs/time_stacked.png" width="250px" alt="Stacked Plot"/>
+                <br/><b>Stacked Time Plot</b>
+            </td>
+        </tr>
+    </table>
+</div>
 
-* how to use linespecer for beautiful matlab graph
+---
 
-https://kr.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distinguishable-line-colors-colormap
+## 📋 Introduction
 
-* how to set legend interpreter as latex
+**(01.09.25)** I have now given up on sticking solely to MATLAB. [SciencePlots](https://github.com/garrettj403/SciencePlots) is truly an excellent tool.
 
-* the method for removing unnecessary white space
+This repository contains essential tools and techniques for creating **publication-quality figures** in MATLAB:
 
-* the method for changing the default tick fonts to the latex version
+* 🎨 **LineSpecer** for beautiful and distinguishable line colors ([FileExchange](https://kr.mathworks.com/matlabcentral/fileexchange/42673-beautiful-and-distinguishable-line-colors-colormap))
+* 📝 **LaTeX interpreter** for legends and labels
+* 🔧 **White space removal** methods
+* 🔤 **LaTeX fonts** for tick labels
+* 📐 **TileLayout** functionality (MATLAB R2020a+)
+* 🔢 **Thousand separator** formatting
 
-* tilelayout (Only applicable on latest version Matlab)
-
-* thousand seperator 
-
-All outputs are located in `imgs` folder.
+All output examples are located in the `imgs` folder.
 
 ---
 # Must be added for the Paper-quality Figures
