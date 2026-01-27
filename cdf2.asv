@@ -1,0 +1,74 @@
+%% CDF
+clc
+close all;
+clear all;
+
+%% Color parameter
+num_objects = 5; 
+linecolors = linspecer(num_objects, 'qualitative');
+LineColors = flipud(linecolors);
+
+%% Load output file
+fileID = fopen('/media/shapelim/UX9804/uHumans2_cloud/0730_w_gt_w_labels_to_skip/uhumans2__mesh_objects__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
+mesh_objects = textscan(fileID, '%s %s %f %f %f %f');
+fclose(fileID);
+
+fileID = fopen('/media/shapelim/UX9804/uHumans2_cloud/0730_w_gt_w_labels_to_skip/uhumans2__khronos__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
+khronos = textscan(fileID, '%s %s %f %f %f %f');
+fclose(fileID);
+
+fileID = fopen('/media/shapelim/UX9804/uHumans2_cloud/0730_w_gt_w_labels_to_skip/uhumans2__crisp__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
+crisp_wo_certifier = textscan(fileID, '%s %s %f %f %f %f');
+fclose(fileID);
+
+fileID = fopen('/media/shapelim/UX9804/uHumans2_cloud/0730_w_gt_w_labels_to_skip/uhumans2__crisp__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
+crisp = textscan(fileID, '%s %s %f %f %f %f');
+fclose(fileID);
+
+disp("Loading data complete!");
+%% Plot parameters;
+MAX_RANGE = 3.0; 
+INTERVAL = 1000;   
+lindwidth = 1.5;
+LegendFontSize = 13;
+XLabelFontSize = 12;  YLabelFontSize = 12;
+
+%% Draw cdf of alpha: 
+figure("name", "alpha");
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
+disp("Drawing cdf of alpha...");
+ 
+gap = MAX_RANGE / 1000;
+x_linspace = 0:gap:MAX_RANGE;
+mesh_objects_cum = calcCDF(mesh_objects{4}, MAX_RANGE, INTERVAL) * 100;
+khronos_cum = calcCDF(khronos{4}, MAX_RANGE, INTERVAL) * 100;
+crisp_wo_certifier_cum = calcCDF(crisp_wo_certifier{4}, MAX_RANGE, INTERVAL) * 100;
+crisp_cum = calcCDF(crisp{4}, MAX_RANGE, INTERVAL) * 100;
+
+
+
+plot(x_linspace, mesh_objects_cum, '-^', 'Color', LineColors(3, :),  'LineWidth', lindwidth, 'MarkerIndices',1:50:length(x_linspace));
+hold on;
+plot(x_linspace, khronos_cum, '--o', 'Color', LineColors(1, :), 'LineWidth', lindwidth, 'MarkerIndices',1:50:length(x_linspace));
+% plot(x_linspace, e_ge_cum,'--+','MarkerIndices',1:50:length(x_linspace));
+plot(x_linspace, crisp_cum,'--s', 'Color', LineColors(2, :),  'LineWidth', lindwidth, 'MarkerIndices',1:50:length(x_linspace));
+
+
+
+plot(x_linspace, crisp_wo_certifier_cum, '-o', 'Color', LineColors(4, :),  'LineWidth', lindwidth, 'MarkerIndices',1:50:length(x_linspace));
+% plot(x_linspace, e_ga_cum, '-+','MarkerIndices',1:50:length(x_linspace));
+% plot(x_linspace, a_la_cum, '-s', 'Color', LineColors(5, :),  'LineWidth', lindwidth, 'MarkerIndices',1:50:length(x_linspace));
+lgd = legend({'Hydra','LSTM-\texttt{Minimal}', 'Model-aided', 'RNN-\texttt{All}'},'Location','southeast','NumColumns',2, 'fontsize', LegendFontSize);
+lgd.Interpreter = 'latex';
+grid on;
+
+xlabel('Absolute Error (deg)', "FontSize", XLabelFontSize, "Interpreter", 'latex')
+ylabel('Percentage (\%)', "FontSize", YLabelFontSize, "Interpreter", 'latex')
+
+saveas(gcf,"imgs/total_cdf_alpha.png");
+% print -depsc 'imgs/total_cdf_alpha.eps'
+
+disp("Drawing cdf of alpha complete");
+
+

@@ -1,0 +1,125 @@
+%% CDF
+clc
+close all;
+clear all;
+
+%% Color parameter
+num_objects = 4; 
+linecolors = linspecer(num_objects, 'qualitative');
+LineColors = flipud(linecolors);
+
+%% Load output file
+% Mesh objects
+fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__mesh_objects__ALIGNED_ROBOTS/dists_for_precision.txt', 'r');
+precision_data_mesh_objects = textscan(fileID, '%s %s %f %f');
+fclose(fileID);
+
+fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__mesh_objects__ALIGNED_ROBOTS/dists_for_recall.txt', 'r');
+recall_data_mesh_objects = textscan(fileID, '%s %s %f %f');
+fclose(fileID);
+
+% Khronos
+fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__khronos__ALIGNED_ROBOTS/dists_for_precision.txt', 'r');
+precision_data_khronos = textscan(fileID, '%s %s %f %f');
+fclose(fileID);
+
+fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__khronos__ALIGNED_ROBOTS/dists_for_recall.txt', 'r');
+recall_data_khronos = textscan(fileID, '%s %s %f %f');
+fclose(fileID);
+
+% CRISP w/o Verification
+fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__crisp_wo_cert__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
+precison_data_crisp_wo_verif = textscan(fileID, '%s %s %f %f %f %f');
+fclose(fileID);
+
+fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__crisp_wo_cert__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
+recall_data_crisp_wo_verif = textscan(fileID, '%s %s %f %f');
+fclose(fileID);
+
+% CRISP
+fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__crisp__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
+precison_data_crisp = textscan(fileID, '%s %s %f %f %f %f');
+fclose(fileID);
+
+fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__crisp__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
+recall_data_crisp = textscan(fileID, '%s %s %f %f');
+fclose(fileID);
+
+
+disp("Loading data complete!");
+%% Plot parameters;
+MAX_RANGE = 0.5; 
+INTERVAL = 100;   
+linewidth = 2.5;
+markerSize = 15; 
+LegendFontSize = 20;
+ticksFontSIze = 20;
+XLabelFontSize = 20;  YLabelFontSize = 20;
+
+%% Threshold linspace
+gap = MAX_RANGE / INTERVAL;
+x_linspace = 0:gap:MAX_RANGE;
+
+%% Extract distance arrays
+mesh_objects_dist = precision_data_mesh_objects{4};
+khronos_dist = precision_data_khronos{4};
+crisp_wo_certifier_dist = precison_data_crisp_wo_verif{4};
+crisp_dist = precison_data_crisp{4};
+
+recall_mesh_objects_dist = recall_data_mesh_objects{4};
+recall_khronos_dist = recall_data_khronos{4};
+recall_crisp_wo_certifier_dist = recall_data_crisp_wo_verif{4};
+recall_crisp_dist = recall_data_crisp{4};
+
+%% Compute precision-recall
+precision_recall = @(prec_dists, rec_dists, thresh) ...
+    [sum(prec_dists <= thresh) / length(prec_dists), ...
+     sum(rec_dists <= thresh) / length(rec_dists)];
+
+    PR_mesh(:, i) = precision_recall(mesh_objects_dist, recall_mesh_objects_dist, t);
+    PR_khronos(:, i) = precision_recall(khronos_dist, recall_khronos_dist, t);
+    PR_crisp_wo_cert(:, i) = precision_recall(crisp_wo_certifier_dist, recall_crisp_wo_certifier_dist, t);
+    PR_crisp(:, i) = precision_recall(crisp_dist, recall_crisp_dist, t);
+
+
+%%
+PR_mesh = zeros(2, length(x_linspace));
+PR_khronos = zeros(2, length(x_linspace));
+PR_crisp_wo_cert = zeros(2, length(x_linspace));
+PR_crisp = zeros(2, length(x_linspace));
+
+for i = 1:length(x_linspace)
+    t = x_linspace(i);
+    PR_mesh(:, i) = precision_recall(mesh_objects_dist, recall_mesh_objects_dist, t);
+    PR_khronos(:, i) = precision_recall(khronos_dist, recall_khronos_dist, t);
+    PR_crisp_wo_cert(:, i) = precision_recall(crisp_wo_certifier_dist, recall_crisp_wo_certifier_dist, t);
+    PR_crisp(:, i) = precision_recall(crisp_dist, recall_crisp_dist, t);
+end
+
+%% Plot Precision-Recall curve
+figure("name", "PR Curve", 'Position', [50, 50, 500, 500]);
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+set(gca, 'FontSize', 25);
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
+
+plot(PR_mesh(2, :), PR_mesh(1, :), '-.^', 'Color', LineColors(3, :), ...
+    "MarkerSize", markerSize, 'LineWidth', linewidth, 'MarkerIndices',1:8:length(x_linspace));
+hold on;
+plot(PR_khronos(2, :), PR_khronos(1, :), '--d', 'Color', LineColors(1, :), ...
+    "MarkerSize", markerSize, 'LineWidth', linewidth, 'MarkerIndices',1:8:length(x_linspace));
+plot(PR_crisp_wo_cert(2, :), PR_crisp_wo_cert(1, :), '-s', 'Color', LineColors(4, :), ...
+    "MarkerSize", markerSize, 'LineWidth', linewidth, 'MarkerIndices',1:8:length(x_linspace));
+plot(PR_crisp(2, :), PR_crisp(1, :), '-o', 'Color', LineColors(2, :), ...
+    "MarkerSize", markerSize, 'LineWidth', linewidth, 'MarkerIndices',1:8:length(x_linspace));
+
+lgd = legend({'Hydra','Khronos', 'Ours W/o Cert.', 'Ours'}, ...
+    'Location','southeast','NumColumns',1, 'fontsize', LegendFontSize);
+lgd.Interpreter = 'latex';
+grid on;
+set(gca, 'FontSize', ticksFontSIze);
+
+xlabel('Recall', "FontSize", XLabelFontSize, "Interpreter", 'latex')
+ylabel('Precision', "FontSize", YLabelFontSize, "Interpreter", 'latex')
+
+print(gcf, "imgs/precision_recall_curve.png",'-dpng','-r300');
+exportgraphics(gcf, 'imgs/precision_recall_curve.pdf', 'ContentType', 'vector');
