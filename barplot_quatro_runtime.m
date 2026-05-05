@@ -1,3 +1,7 @@
+%% Initialize
+clc; close all; clearvars;
+
+%% Input data
 target_path = "/home/beom/DATASET/kitti_output/avg_com_time_test_02/02/10_to_12/";
 qpp_path = target_path + "Quatro-plusplus_abs_errors.txt";
 q_path = target_path + "Quatro_abs_errors.txt";
@@ -13,29 +17,32 @@ qpps = [qpps; qpp(1:end, 1:4)];
 q_m = mean(qs);
 qpp_m = mean(qpps);
 
-common_fontsize = 32;
-
-% Position : [left bottom width height]
-figure('Position', [500, 650, 1200, 500]);
-% set(gca,'position',[0.11, 0.15, 0.87, 0.78])
-set(groot, 'defaultAxesTickLabelInterpreter', 'latex');
-
 % x = ['a' 'b'];
 % y = [qpp_m; q_m]
 y = [0.0094 0.0059 0.1203 0.174; 0 0.0132 0.215 0.23 ]; % I7
 % y = [0.0035 0.0021 0.04658 0.02607 ; 0 0.004 0.05309 0.04344]; %I9
 
+%% Drawing parameters
+% --- Sizes ---
+common_fontsize = 32;
+% --- Colors ---
+linecolors = linspecer(7, 'qualitative');
+LineColors = flipud(linecolors);
+
+%% Plot
+% Position : [left bottom width height]
+figure('Position', [500, 650, 1200, 500]);
+% set(gca,'position',[0.11, 0.15, 0.87, 0.78])
+set(groot, 'defaultAxesTickLabelInterpreter', 'latex');
+
 b = barh(y,'stacked', 'BarWidth', 0.8);
-% b2 = bar(X, RANSAC_lists,'BarWidth', 1.0); 
+% b2 = bar(X, RANSAC_lists,'BarWidth', 1.0);
 
 ax=gca;
 ax.YAxis.FontSize = common_fontsize;
 
 % ylabel(" ", "FontSize", common_fontsize, 'interpreter', 'latex');
 legend({'Ground segmentation-','Voxelization-','FPFH-', 'Matching'},'Location','southoutside', 'NumColumns',4, 'fontsize', 36, 'interpreter', 'latex');
-
-linecolors = linspecer(7, 'qualitative');
-LineColors = flipud(linecolors);
 
 set(b(1), 'FaceColor', LineColors(4, :));
 set(b(2), 'FaceColor', LineColors(7, :));
@@ -51,6 +58,8 @@ ax.YAxis.FontSize = 32;
 ax.XAxis.FontSize = 25;
 xlabel("Average computational time [sec]", 'interpreter', 'latex', "FontSize", 36);
 
+%% Save
 % print(gcf, "legend",'-dpng','-r300');
-print(gcf, "average_computational_time_v2_i7",'-dpng','-r300'); 
-% print(gcf, "average_computational_time_v2_i9",'-dpng','-r300'); 
+exportgraphics(gcf, "average_computational_time_v2_i7.png", 'Resolution', 300);
+exportgraphics(gcf, "average_computational_time_v2_i7.pdf", 'ContentType', 'vector');
+% print(gcf, "average_computational_time_v2_i9",'-dpng','-r300');
