@@ -1,14 +1,10 @@
-clc;
-close all;
-clear all;
+%% Initialize
+clc; close all; clearvars;
 set(groot, 'defaultAxesTickLabelInterpreter','latex'); %set(groot, 'defaultLegendInterpreter','latex');
+% Note: this script does not write to disk; figure is interactive only.
 
-%% Bar plot
-figure('Position', [500, 300, 600, 340]);
-set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
-set(groot, 'defaultAxesTickLabelInterpreter','latex');
+%% Input data
 % Presicion of GPF vs R-GPF
-
 precision_seq00 = [26.23 87.63];
 precision_seq01 = [32.11 88.93];
 precision_seq02 = [28.53 75.30];
@@ -18,6 +14,15 @@ X = categorical({'00','01','02','05', '07'});
 X = reordercats(X,{'00','01','02','05', '07'});
 
 y_s = [precision_seq00;precision_seq01;precision_seq02;precision_seq05;precision_seq07];
+
+%% Drawing parameters
+% (no shared drawing parameters; inline within %% Plot)
+
+%% Plot
+figure('Position', [500, 300, 600, 340]);
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
+
 b = bar(X, y_s); %, 'Width', 1.2);
 lgd = legend({'GPF [22]','R-GPF (Ours)'},'Location','southeast','NumColumns',1, 'fontsize', 11, "Interpreter", 'latex');
 
@@ -50,8 +55,3 @@ LineColors = flipud(linecolors);
 
 b(1).FaceColor = LineColors(1,:);
 b(2).FaceColor = LineColors(2,:);
-
-saveas(gcf, "imgs/ground_bar_plot_v2.png")
-print -depsc 'imgs/ground_bar_plot_v2.eps'
-
-
