@@ -1,12 +1,13 @@
-# paper_quality_plot.matlab
-
-All materials are from [Urban Robotics Lab.](http://urobot.kaist.ac.kr/) @KAIST
-
-Original author: Hyungtae Lim (shapelim@kaist.ac.kr)
-
-Advisers: Giseop Kim (paulgkim@kaist.ac.kr), Byeongho YU (bhyu@kaist.ac.kr) 
-
-**(01.09.25)** I have now given up on sticking solely to MATLAB. [SciencePlots](https://github.com/garrettj403/SciencePlots) is truly an excellent tool.
+<div align="center">
+    <h1>paper_quality_plot.matlab</h1>
+    <a href="https://www.mathworks.com/products/matlab.html"><img src="https://img.shields.io/badge/MATLAB-0076A8?logo=mathworks&logoColor=white" /></a>
+    <br />
+    <br />
+    <p>All materials are from <a href="http://urobot.kaist.ac.kr/">Urban Robotics Lab.</a> @KAIST</p>
+    <p>Original author: Hyungtae Lim (shapelim@kaist.ac.kr)</p>
+    <p>Advisers: Giseop Kim (paulgkim@kaist.ac.kr), Byeongho YU (bhyu@kaist.ac.kr)</p>
+    <p><strong>(01.09.25)</strong> I have now given up on sticking solely to MATLAB. <a href="https://github.com/garrettj403/SciencePlots">SciencePlots</a> is truly an excellent tool.</p>
+</div>
 
 ---
 
