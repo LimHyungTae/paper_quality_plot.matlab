@@ -12,6 +12,113 @@
 
 ---
 
+## Pipeline-safety addendum (read first, overrides examples)
+
+The user has explicitly asked: *"코드를 정리하는거 이외에는 따로 무언가를 건드려셔 안 동작하는 일이 없도록 해 줘"* — **organization-only**. The following rules tighten the plan beyond what individual task examples may suggest. **Where any Phase 1 example below conflicts with these rules, these rules win.**
+
+### A. `set(groot, ...)` and `set(gca, ...)` — preserve original positions
+
+Do NOT relocate or consolidate any `set(groot, ...)` or `set(gca, ...)` call, even if it appears redundant.
+
+- If the original file has the call at the very top (before any `%%` cell), it stays in `%% Initialize`.
+- If the original has it inside a per-figure block, it stays inside that block's `%% Plot` section (at the same relative position relative to `figure(...)` and `plot(...)`).
+- Do NOT add new `set(groot, ...)` calls. The standard template's `%% Initialize` shows it for illustration only — if the source file doesn't already have one at the top, omit it.
+- `%% Initialize` minimum content: `clc; close all; clearvars;`. Anything else only if the original had it at the top.
+
+This is more conservative than the spec's "consolidation" language. Reason: removing a `set(...)` call CAN have visual effects if a later figure depends on the default being set in a specific order or scope. Zero-risk policy.
+
+### B. `figure(...)` handle assignment — preserve original
+
+Do NOT add `fig =` (or any other handle variable) before `figure(...)` calls that didn't have one in the original. Conversely, if the original assigned a handle, preserve the variable name.
+
+### C. Variable renaming — only for the listed typos
+
+Only these typo fixes are allowed, applied **only to the variable name** (do not rename the variable's references unless they appear in the same file with the same typo):
+
+| Typo | Fix |
+|---|---|
+| `ticksFontSIze` | `ticksFontSize` |
+
+Anything else stays as-is. Examples that look "ugly" but are NOT renamed:
+- `imgWidthSize` (don't rename to `imgWidth`)
+- `imgColumnSize` (don't rename to `imgHeight`)
+- `XFontSize` / `YFontSize` (don't rename)
+- `lgdFontSize` (don't rename)
+- `LineColors`, `linecolors` (different cases — don't normalize)
+
+### D. `exportgraphics` vs. `print` — known behavior caveat
+
+`exportgraphics(gcf, 'foo.png', 'Resolution', 300)` may produce a slightly different image **size/cropping** than `print(gcf, 'foo.png', '-dpng', '-r300')`. `exportgraphics` trims around axes; `print` saves the full figure window. The user accepted this when choosing exportgraphics ("`print` sometimes produces broken bitmap PNGs").
+
+If after MATLAB run the user reports a figure looks too tightly cropped, the workaround is to add `'Padding','figure'` (R2023b+) or fall back to `print` for that specific file. **Do not pre-emptively add padding** — only if the user reports an issue.
+
+### E. Subagent vs. user roles — agents do NOT run MATLAB
+
+The executing subagent cannot launch MATLAB. Each task therefore commits **only the `.m` file change**, not the regenerated images. The user runs MATLAB in batches (after each phase or as preferred) and commits image diffs separately.
+
+Concretely, each task's commit step stages only:
+```bash
+git add <new_filename>.m   # rename auto-detected by git status
+git commit -m "..."
+```
+
+Do NOT `git add imgs/...` in any task commit. Image regeneration is the user's manual step and gets its own commit later.
+
+### F. Pre-flight: handle existing uncommitted changes
+
+`git status` at session start shows uncommitted changes:
+- `M plot_horizontal_bars2.m`, `M plot_linegraph3.m` — these are the source files we're about to refactor; modifications will be incorporated into the refactor (read the working-tree version, not HEAD)
+- `M imgs/biou_*`, `M imgs/hydra2_0_*` — regenerated images from prior runs
+
+**Before Task 1 starts**, the executing harness should:
+1. Verify `git status` is consistent with the above (no other unexpected staged changes)
+2. NOT touch the modified images — leave them dirty; they'll be replaced when the user re-runs MATLAB
+3. Read the **working tree** (not HEAD) of `plot_horizontal_bars2.m` and `plot_linegraph3.m` — this captures the user's latest edits
+
+### G. `git mv` rename detection — verify per task
+
+After each task's edit, verify rename was detected:
+
+```bash
+git status --short | grep -E '^R|->'
+```
+
+Expect: a line showing `R  plot_OLD.m -> NEW.m` (with similarity %). If instead `git status` shows `D plot_OLD.m` and `A NEW.m` (delete + add separate), git did not detect the rename. In that case:
+
+```bash
+# Recover by checking the percentage and forcing detection:
+git diff --find-renames=40% --stat HEAD
+```
+
+If similarity is > 40%, force the detection threshold lower in the commit log via the user's `git config diff.renames true` (likely already on). If similarity is genuinely < 40%, accept history loss for that file (rare; would only happen if the refactor changed almost every line). Document any such cases.
+
+### H. MATLAB syntax — quick lints before commit
+
+Subagents cannot run MATLAB to verify syntax. They MUST eyeball-check each finished `.m` file for these common pitfalls:
+
+1. **String concatenation requires double-quoted strings:** `"imgs/" + saveStem + ".png"` works; `'imgs/' + saveStem + '.png'` does NOT (chars don't concatenate with `+`). If using `+`, all operands must be double-quoted.
+2. **Variables used before declared:** in multi-figure files (Option C), each `%% Plot (<label>)` block must reference only variables defined in its own `%% Input data (<label>)` and `%% Drawing parameters (<label>)` — or in `%% Initialize`. If a section relies on a variable from a previous section, the script will work in MATLAB (script workspace persists across cells) but will FAIL when that section is run alone via Cmd+Enter. To stay true to Option C self-contained sections, duplicate every parameter into every section that uses it.
+3. **`legend_handles` etc. cross-section persistence:** `plot_horizontal_bars2.m` has a known bug where `legend_labels` is commented-out only in the px=20 section, causing the `legend_handles` line to depend on a stale value from px=10. **Preserve this bug** — do not fix.
+4. **`xlim_` is a valid name** but be cautious: `xlim` is a function; assigning to `xlim_` (with underscore) is fine; assigning to `xlim` would shadow the function for the rest of the script.
+5. **Removing the `% set(AX1, 'position', ...)` style commented lines** is OK — they're trivially-dead commented code from copy-paste lineage. **Preserving them is also OK** if their removal feels risky. Default: preserve.
+
+### I. Commit message convention
+
+Each commit:
+```
+Refactor <old_name>.m → <new_name>.m
+
+Apply 5-section template per spec. Migrate <print|saveas> →
+exportgraphics. <Any per-file note, e.g., "Drop EPS save."
+"Output filename unchanged.">
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+```
+
+Keep messages short. Don't enumerate every line change in the body.
+
+---
+
 ## File Structure
 
 After this plan completes, the repo will have these renamed files (24 total). Pre-existing utility files (`calcCDF.m`, `parseCSV.m`, `linspecer.m`, `RMSE.m`, `template.m`, `multiple_boxplot_time.m`, `calcModelAidedOutput.m`) and `.asv` autosave files are untouched. Output filenames in `imgs/` are unchanged.
@@ -146,6 +253,8 @@ The repo is already a git working tree on `main` with some uncommitted image cha
 ## Phase 1: Reference files (3 biou-related files)
 
 These three files establish the canonical pattern. The user reviews after Phase 1 before continuing to Phase 2.
+
+> **NOTE on Phase 1 examples:** The detailed code blocks below show the section *layout* (Initialize / Input data / Drawing parameters / Plot / Save). They do NOT always show `set(groot, ...)` calls in the right position. **Per Pipeline-safety addendum rule A, preserve every `set(groot, ...)` and `set(gca, ...)` call in its original line position from the source file.** Read the source file's current line positions for these calls; place them at the same relative position in the new file. The Initialize block is `clc; close all; clearvars;` and nothing else (unless the original file had additional global setup at the very top, before any `%%` cell).
 
 ### Task 1: Refactor `plot_horizontal_bars2.m` → `horizontal_bars_hrnet.m`
 
@@ -425,11 +534,11 @@ open /tmp/prev_3px.png
 ```
 Repeat for 7px, 10px, 20px. Bar positions, colors, axis ranges, and titles must match the originals.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Commit (.m only — no images per addendum rule E)**
 
 ```bash
-git add horizontal_bars_hrnet.m imgs/biou_horizontal_bar_w_hrnet_*.png imgs/biou_horizontal_bar_w_hrnet_*.pdf
-git status  # confirm plot_horizontal_bars2.m is staged for deletion via the rename
+git status  # confirm plot_horizontal_bars2.m → horizontal_bars_hrnet.m is shown as a rename
+git add horizontal_bars_hrnet.m
 git commit -m "$(cat <<'EOF'
 Refactor horizontal_bars2.m → horizontal_bars_hrnet.m
 
@@ -442,6 +551,8 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
 EOF
 )"
 ```
+
+Image regeneration is the user's manual step (run in MATLAB), batched at end of Phase 1.
 
 ---
 
@@ -554,10 +665,11 @@ open /tmp/prev_biou.png imgs/biou_line_graph.png
 
 Confirm: line markers at x = [5,7,10,20], y values match, legend shows 4 entries, log-scale x-axis.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Commit (.m only — no images per addendum rule E)**
 
 ```bash
-git add linegraph_biou_pxthr.m imgs/biou_line_graph.png imgs/biou_line_graph.pdf
+git status  # confirm rename detected
+git add linegraph_biou_pxthr.m
 git commit -m "$(cat <<'EOF'
 Refactor linegraph3.m → linegraph_biou_pxthr.m
 
@@ -678,10 +790,11 @@ open imgs/biou_line_graph.png
 
 Confirm: 3 lines (no HRNet baseline), x-axis ticks at [2.5, 5.0, 7.5, 10] (linear, not log), legend at southwest, "Dummy performance (TBU)" y-label.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Commit (.m only — no images per addendum rule E)**
 
 ```bash
-git add linegraph_biou_masking.m imgs/biou_line_graph.png imgs/biou_line_graph.pdf
+git status  # confirm rename detected
+git add linegraph_biou_masking.m
 git commit -m "$(cat <<'EOF'
 Refactor linegraph4.m → linegraph_biou_masking.m
 
@@ -696,20 +809,47 @@ EOF
 
 ---
 
-### Task 4: User-review checkpoint
+### Task 4: User-review checkpoint (MATLAB run + visual verification)
 
-**Stop here.** Before continuing to Phase 2, the user reviews the three reference files (`horizontal_bars_hrnet.m`, `linegraph_biou_pxthr.m`, `linegraph_biou_masking.m`) and confirms the pattern is correct. Phase 2 applies the same transformation 21 more times — any pattern issues caught here save 21 fixes.
+**Stop here.** Phase 1 has produced 3 commits (each renaming and refactoring one .m file). No images regenerated yet. Before continuing to Phase 2, the user runs the 3 scripts in MATLAB IDE and verifies output is visually unchanged.
 
-- [ ] **Step 1: Summarize for user**
+- [ ] **Step 1: Summarize commits for user**
 
 Report:
-- The 3 reference files renamed and refactored
-- Output images visually unchanged
-- 3 commits added (rename + restructure each)
+- 3 reference files renamed + refactored: `horizontal_bars_hrnet.m`, `linegraph_biou_pxthr.m`, `linegraph_biou_masking.m`
+- 3 commits added (one per file, .m only)
+- Images NOT yet regenerated — user's next step
 
-- [ ] **Step 2: Wait for user confirmation**
+- [ ] **Step 2: User runs scripts in MATLAB**
 
-User says "looks good, proceed" or requests pattern adjustments. If adjustments, apply them retroactively to the 3 reference files (commit fixups), then proceed.
+User opens each of the 3 new files in MATLAB IDE and runs them (F5). Each script regenerates its output images in `imgs/`.
+
+For `horizontal_bars_hrnet.m`: 4 figures, 8 image files (4 png + 4 pdf, all `imgs/biou_horizontal_bar_w_hrnet_*.{png,pdf}`).
+For `linegraph_biou_pxthr.m`: 1 figure, 2 image files (`imgs/biou_line_graph.{png,pdf}`).
+For `linegraph_biou_masking.m`: 1 figure, 2 image files (overwrites the previous, `imgs/biou_line_graph.{png,pdf}`).
+
+- [ ] **Step 3: User visually compares**
+
+User opens regenerated images in Preview alongside the previous versions (e.g., from before this session via `git show HEAD~3:imgs/<file>.png > /tmp/prev.png`). Confirms bar positions, axes, legends, fonts, colors look identical.
+
+- [ ] **Step 4: User reports back**
+
+User says "looks good, proceed" or "<file>.m output differs in <way>".
+
+- If "looks good": user commits the regenerated images (or asks main agent to). Then Phase 2 begins.
+- If output differs: investigate. Likely cause is `exportgraphics` cropping (addendum rule D) — propose `'Padding','figure'` workaround or revert that file's save block to `print`. Apply fix, ask user to re-run, re-verify.
+
+- [ ] **Step 5: User commits regenerated images**
+
+```bash
+git add imgs/biou_horizontal_bar_w_hrnet_*.png imgs/biou_horizontal_bar_w_hrnet_*.pdf imgs/biou_line_graph.png imgs/biou_line_graph.pdf
+git commit -m "$(cat <<'EOF'
+Regenerate Phase 1 reference images via exportgraphics
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+EOF
+)"
+```
 
 ---
 
