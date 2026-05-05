@@ -1,10 +1,8 @@
-%% CDF
-clc
-close all;
-clear all;
+%% Initialize
+clc; close all; clearvars;
 
 %% Color parameter
-num_objects = 5; 
+num_objects = 5;
 linecolors = linspecer(num_objects, 'qualitative');
 LineColors = flipud(linecolors);
 
@@ -24,36 +22,36 @@ for data_name = data_names
     a_seq = 12;
     alpha_csvname = sprintf(format_name2, a_seq, m_t(1), i_t(1), data_name);
     RNN_e.alpha = parseCSV(alpha_csvname, a_seq, "alpha");
-    
+
     a_seq_tmp = 7; % just for loading file
     b_seq = 32;
     beta_csvname = sprintf(format_name, a_seq_tmp, b_seq, m_t(1), i_t(1), data_name);
     RNN_e.beta = parseCSV(beta_csvname, b_seq, "beta");
-        
+
     % Load RNN - All
     alpha_csvname = sprintf(format_name2, a_seq, m_t(1), i_t(2), data_name);
     RNN_a.alpha = parseCSV(alpha_csvname, a_seq, "alpha");
-    
+
     a_seq_tmp = 7; % just for loading file
     beta_csvname = sprintf(format_name, a_seq_tmp, b_seq, m_t(1), i_t(2), data_name);
     RNN_a.beta = parseCSV(beta_csvname, b_seq, "beta");
-    
+
     % Load LSTM - Elements
     a_seq = 12;
-    
+
     alpha_csvname = sprintf(format_name2, a_seq, m_t(3), i_t(1), data_name);
     LSTM_e.alpha = parseCSV(alpha_csvname, a_seq, "alpha");
-    
+
     a_seq_tmp = 12; % just for loading file
     b_seq = 64;
     beta_csvname = sprintf(format_name, a_seq_tmp, b_seq, m_t(3), i_t(1), data_name);
     LSTM_e.beta = parseCSV(beta_csvname, b_seq, "beta");
-    
+
     % Load LSTM - All
     a_seq = 12;
     alpha_csvname = sprintf(format_name2, a_seq, m_t(3), i_t(2),data_name);
     LSTM_a.alpha = parseCSV(alpha_csvname, a_seq, "alpha");
-    
+
     format_name3 = "materials/output_csvs/b%d_%s_%s_EAV2_%d_output.csv";
     b_seq = 36;
     beta_csvname = sprintf(format_name3, b_seq, m_t(3), i_t(2), data_name);
@@ -80,7 +78,7 @@ for data_name = data_names
     a_error_m = [a_error_m; error_m];
     a_error_Re = [a_error_Re; error_Re]; a_error_Ra = [a_error_Ra; error_Ra];
     a_error_Le = [a_error_Le; error_Le]; a_error_La = [a_error_La; error_La];
-    
+
     % Beta error
     diff_seq = 26; % b_seq - a_seq + 1
     error_m = abs(Model.b_gt_reshaped - Model.b_pred_reshaped);
@@ -90,29 +88,31 @@ for data_name = data_names
     diff_seq2 = 53; % b_seq - a_seq + 1
     error_Le = abs(LSTM_e.beta.b_gt(diff_seq2:end) - LSTM_e.beta.b_pred(diff_seq2:end));
     error_La = abs(LSTM_a.beta.b_gt - LSTM_a.beta.b_pred);
-    
+
     b_error_m = [b_error_m; error_m];
     b_error_Re = [b_error_Re; error_Re]; b_error_Ra = [b_error_Ra; error_Ra];
     b_error_Le = [b_error_Le; error_Le]; b_error_La = [b_error_La; error_La];
-    
+
 end
 
 disp("Loading data complete");
 
+%% Input data (alpha)
+% Uses a_error_m, a_error_Re, a_error_Ra, a_error_Le, a_error_La loaded above.
 
-%% Plot parameters;
+%% Drawing parameters (alpha)
 MAX_RANGE = 0.012; % --------------- TO BE SET ---------------
 INTERVAL = 1000;   % --------------- TO BE SET ---------------
 lindwidth = 1.5;
 LegendFontSize = 13;
 XLabelFontSize = 12;  YLabelFontSize = 12;
 
-%% Draw cdf of alpha: 
+%% Plot (alpha)
 figure("name", "alpha");
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 disp("Drawing cdf of alpha...");
- 
+
 gap = MAX_RANGE / 1000;
 x_linspace = 0:gap:MAX_RANGE;
 x_linspace = x_linspace * 180.0 / pi; % rad to angle
@@ -139,17 +139,27 @@ grid on;
 xlabel('Absolute Error (deg)', "FontSize", XLabelFontSize, "Interpreter", 'latex')
 ylabel('Percentage (\%)', "FontSize", YLabelFontSize, "Interpreter", 'latex')
 
-saveas(gcf,"imgs/total_cdf_alpha.png");
-% print -depsc 'imgs/total_cdf_alpha.eps'
+%% Save (alpha)
+exportgraphics(gcf, "imgs/total_cdf_alpha.png", 'Resolution', 300);
+exportgraphics(gcf, "imgs/total_cdf_alpha.pdf", 'ContentType', 'vector');
 
 disp("Drawing cdf of alpha complete");
 
 
-%% Draw cdf of beta: 
+%% Input data (beta)
+% Uses b_error_m, b_error_Re, b_error_Ra, b_error_Le, b_error_La loaded above.
+
+%% Drawing parameters (beta)
+MAX_RANGE = 0.05; % --------------- TO BE SET ---------------
+INTERVAL = 1000;   % --------------- TO BE SET ---------------
+lindwidth = 1.5;
+LegendFontSize = 13;
+XLabelFontSize = 12;  YLabelFontSize = 12;
+
+%% Plot (beta)
 figure("name", "beta");
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
-MAX_RANGE = 0.05; % --------------- TO BE SET ---------------
 
 disp("Drawing cdf of beta...");
 
@@ -175,8 +185,8 @@ grid on;
 xlabel('Absolute Error (deg)', "FontSize", XLabelFontSize, "Interpreter", 'latex')
 ylabel('Percentage (\%)', "FontSize", YLabelFontSize, "Interpreter", 'latex')
 
-saveas(gcf,"imgs/total_cdf_beta.png");
+%% Save (beta)
+exportgraphics(gcf, "imgs/total_cdf_beta.png", 'Resolution', 300);
+exportgraphics(gcf, "imgs/total_cdf_beta.pdf", 'ContentType', 'vector');
+
 disp("Drawing cdf of beta complete");
-
-
-
