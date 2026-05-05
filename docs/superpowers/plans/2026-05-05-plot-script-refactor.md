@@ -130,8 +130,8 @@ After this plan completes, the repo will have these renamed files (24 total). Pr
 | `linegraph_biou_pxthr.m` | `plot_linegraph3.m` | 1 figure |
 | `linegraph_biou_masking.m` | `plot_linegraph4.m` | 1 figure |
 | `linegraph_vggt.m` | `plot_linegraph5.m` | 4 figures |
-| `linegraph_hydra_sam3d.m` | `plot_linegraph6.m` | 3 figures |
-| `linegraph_hydra_pr.m` | `plot_linegraph7.m` | 3 figures |
+| `linegraph_hydra_pr.m` | `plot_linegraph6.m` | 3 figures |
+| `linegraph_hydra_sam3d.m` | `plot_linegraph7.m` | 3 figures |
 | `barplot_gpf_precision.m` | `plot_barplot.m` | 1 figure |
 | `barplot_quatro_runtime.m` | `plot_barplot_avg_computation_time.m` | 1 figure |
 | `barplot_maxclique.m` | `plot_barplot_maxclique_num.m` | 3 figures |

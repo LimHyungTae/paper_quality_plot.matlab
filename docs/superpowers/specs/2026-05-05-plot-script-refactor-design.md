@@ -41,8 +41,8 @@ Pattern: `<category>_<distinctive>.m`. Same-category files sort together. Side b
 | `plot_linegraph3.m` | `linegraph_biou_pxthr.m` | B-mIoU vs. pixel threshold (HRNet + SOTA) |
 | `plot_linegraph4.m` | `linegraph_biou_masking.m` | masking-ratio dummy/draft |
 | `plot_linegraph5.m` | `linegraph_vggt.m` | VGGT ATE / Acc / Compl / Chamfer |
-| `plot_linegraph6.m` | `linegraph_hydra_sam3d.m` | Hydra2.0 PR-curve (SAM3D variants) |
-| `plot_linegraph7.m` | `linegraph_hydra_pr.m` | Hydra2.0 PR-curve (Hydra/Khronos/CRISP) |
+| `plot_linegraph6.m` | `linegraph_hydra_pr.m` | Hydra2.0 PR-curve (Hydra/Khronos/CRISP/SlideSLAM) |
+| `plot_linegraph7.m` | `linegraph_hydra_sam3d.m` | Hydra2.0 PR-curve (SAM3D variants) |
 | `plot_barplot.m` | `barplot_gpf_precision.m` | GPF vs. R-GPF precision |
 | `plot_barplot_avg_computation_time.m` | `barplot_quatro_runtime.m` | Quatro vs. Quatro++ runtime |
 | `plot_barplot_maxclique_num.m` | `barplot_maxclique.m` | max-clique inlier counts |
