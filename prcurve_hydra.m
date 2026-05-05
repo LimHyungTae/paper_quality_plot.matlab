@@ -78,14 +78,14 @@ f1_crisp    = 2 .* (prec_crisp .* rec_crisp)     ./ (prec_crisp + rec_crisp + ep
 linewidth = 2.5;
 markerSize = 15;
 LegendFontSize = 20;
-ticksFontSIze = 20;
+ticksFontSize = 20;
 XLabelFontSize = 20;  YLabelFontSize = 20;
 
 %% Plot (pr_curve)
 % === Plot PR Curve ===
 figure("name", "Precision-Recall", 'Position', [50, 50, 500, 500]);
 set(gca, 'LooseInset', max(get(gca, 'TightInset'), 0.02));
-set(gca, 'FontSize', ticksFontSIze);
+set(gca, 'FontSize', ticksFontSize);
 set(groot, 'defaultAxesTickLabelInterpreter', 'latex');
 
 plot(rec_mesh, prec_mesh, '-.^', 'Color', LineColors(3, :), ...
@@ -137,12 +137,12 @@ exportgraphics(gcf, 'imgs/precision_recall_curve.pdf', 'ContentType', 'vector');
 linewidth = 2.5;
 markerSize = 15;
 LegendFontSize = 20;
-ticksFontSIze = 20;
+ticksFontSize = 20;
 XLabelFontSize = 20;  YLabelFontSize = 20;
 
 %% Plot (f1_vs_threshold)
 figure("name","F1 vs Threshold",'Position',[580, 50, 500, 500]);
-set(gca,'FontSize',ticksFontSIze);
+set(gca,'FontSize',ticksFontSize);
 plot(thresholds, f1_mesh,     '-.^','LineWidth',linewidth); hold on;
 plot(thresholds, f1_khronos,  '--d','LineWidth',linewidth);
 plot(thresholds, f1_crisp_wo, '-s','LineWidth',linewidth);
