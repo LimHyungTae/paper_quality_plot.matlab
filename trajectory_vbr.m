@@ -1,8 +1,8 @@
-clc
-close all;
-clear all;
+%% Initialize
+clc; close all; clearvars;
 
-%% Parse 3D position
+%% Input data
+% Parse 3D position
 % file_path = 'materials/vbr_traj/spagna_train0_gt.txt';
 %file_path = 'materials/vbr_traj/colosseo_train0_gt.txt';
 % file_path = 'materials/vbr_traj/pincio_train0_gt.txt';
@@ -28,7 +28,7 @@ x = data{2};
 y = data{3};
 z = data{1};
 
-%% Plot parameters
+%% Drawing parameters
 linewidth3D = 36;
 linewidth2D = 36;
 markersize = 25;
@@ -36,14 +36,14 @@ legendFontSize = 25;
 tickSize = 22;
 labeleSize = 25;
 
-
-%% Colorization - 3D Plot
+%% Plot (3D)
+% Colorization - 3D Plot
 figure("Name", '3D Trajectory')
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02));
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 
-% ---- Note that if the trajectory is too long, it doesn't work!!! ---- 
-% p=plot3(x, y, z,  'LineWidth', linewidth, 'LineStyle', '-'); 
+% ---- Note that if the trajectory is too long, it doesn't work!!! ----
+% p=plot3(x, y, z,  'LineWidth', linewidth, 'LineStyle', '-');
 % p.Annotation.LegendInformation.IconDisplayStyle = 'off';
 % data_size = size(x);
 % n = data_size(1);
@@ -61,7 +61,7 @@ hold on;
 
 
 % Add markers
-num_objects = 2; 
+num_objects = 2;
 linecolors = linspecer(num_objects, 'qualitative');
 LineColors = flipud(linecolors);
 plot3(x(1), y(1), z(1),"s", "MarkerSize", markersize, 'MarkerFaceColor', LineColors(1, :), 'MarkerEdgeColor', LineColors(1, :));
@@ -78,33 +78,35 @@ xtickformat('%,4.4g');
 ytickformat('%,4.4g');
 ztickformat('%,4.4g');
 
+%% Save (3D)
 if strcmp(file_path, 'materials/vbr_traj/campus_train0_gt.txt')
-    print(gcf, "imgs/campus_train0_gt.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/campus_train0_gt.eps', '-r300');
+    exportgraphics(gcf, "imgs/campus_train0_gt.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/campus_train0_gt.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/ciampino_train1_gt.txt')
-    print(gcf, "imgs/ciampino_train1_gt.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/ciampino_train1_gt.eps', '-r300');
+    exportgraphics(gcf, "imgs/ciampino_train1_gt.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/ciampino_train1_gt.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/ciampino_train0_gt.txt')
-    print(gcf, "imgs/ciampino_train0_gt.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/ciampino_train0_gt.eps', '-r300');
+    exportgraphics(gcf, "imgs/ciampino_train0_gt.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/ciampino_train0_gt.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/ciampino_train1_gt.txt')
-    print(gcf, "imgs/ciampino_train1_gt.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/ciampino_train1_gt.eps', '-r300');
+    exportgraphics(gcf, "imgs/ciampino_train1_gt.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/ciampino_train1_gt.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/spagna_train0_gt.txt')
-    print(gcf, "imgs/spagna_train0_gt.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/spagna_train0_gt.eps', '-r300');
+    exportgraphics(gcf, "imgs/spagna_train0_gt.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/spagna_train0_gt.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/colosseo_train0_gt.txt')
-    print(gcf, "imgs/colosseo_train0_gt.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/colosseo_train0_gt.eps', '-r300');
+    exportgraphics(gcf, "imgs/colosseo_train0_gt.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/colosseo_train0_gt.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/pincio_train0_gt.txt')
-    print(gcf, "imgs/pincio_train0_gt.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/pincio_train0_gt.eps', '-r300');
+    exportgraphics(gcf, "imgs/pincio_train0_gt.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/pincio_train0_gt.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/diag_train0_gt.txt')
-    print(gcf, "imgs/diag_train0_gt.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/diag_train0_gt.eps', '-r300');
+    exportgraphics(gcf, "imgs/diag_train0_gt.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/diag_train0_gt.pdf", 'ContentType', 'vector');
 end
 
-%% 2D Colored Map (x, y) with z as color
+%% Plot (2D)
+% 2D Colored Map (x, y) with z as color
 figure("Name", '2D Colored Map')
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02));
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
@@ -142,28 +144,29 @@ end
 xtickformat('%,4.4g');
 ytickformat('%,4.4g');
 
+%% Save (2D)
 if strcmp(file_path, 'materials/vbr_traj/campus_train0_gt.txt')
-    print(gcf, "imgs/campus_train0_gt.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/campus_train0_gt.eps', '-r300');
+    exportgraphics(gcf, "imgs/campus_train0_gt.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/campus_train0_gt.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/campus_train1_gt.txt')
-    print(gcf, "imgs/campus_train1_gt_2D.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/campus_train1_gt_2D.eps', '-r300');
+    exportgraphics(gcf, "imgs/campus_train1_gt_2D.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/campus_train1_gt_2D.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/ciampino_train0_gt.txt')
-    print(gcf, "imgs/ciampino_train0_gt_2D.png", '-dpng', '-r300');
+    exportgraphics(gcf, "imgs/ciampino_train0_gt_2D.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/ciampino_train0_gt_2D.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/ciampino_train1_gt.txt')
-    print(gcf, "imgs/ciampino_train1_gt_2D.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/ciampino_train1_gt_2D.eps', '-r300');
-    print('-depsc2', 'imgs/ciampino_train0_gt_2D.eps', '-r300');
+    exportgraphics(gcf, "imgs/ciampino_train1_gt_2D.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/ciampino_train1_gt_2D.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/spagna_train0_gt.txt')
-    print(gcf, "imgs/spagna_train0_gt_2D.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/spagna_train0_gt_2D.eps', '-r300');
+    exportgraphics(gcf, "imgs/spagna_train0_gt_2D.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/spagna_train0_gt_2D.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/colosseo_train0_gt.txt')
-    print(gcf, "imgs/colosseo_train0_gt_2D.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/colosseo_train0_gt_2D.eps', '-r300');
+    exportgraphics(gcf, "imgs/colosseo_train0_gt_2D.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/colosseo_train0_gt_2D.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/pincio_train0_gt.txt')
-    print(gcf, "imgs/pincio_train0_gt_2D.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/pincio_train0_gt_2D.eps', '-r300');
+    exportgraphics(gcf, "imgs/pincio_train0_gt.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/pincio_train0_gt.pdf", 'ContentType', 'vector');
 elseif strcmp(file_path, 'materials/vbr_traj/diag_train0_gt.txt')
-    print(gcf, "imgs/diag_train0_gt_2D.png", '-dpng', '-r300');
-    print('-depsc2', 'imgs/diag_train0_gt_2D.eps', '-r300');
+    exportgraphics(gcf, "imgs/diag_train0_gt_2D.png", 'Resolution', 300);
+    exportgraphics(gcf, "imgs/diag_train0_gt_2D.pdf", 'ContentType', 'vector');
 end
