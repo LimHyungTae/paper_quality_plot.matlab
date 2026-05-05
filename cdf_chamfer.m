@@ -1,10 +1,8 @@
-%% CDF
-clc
-close all;
-clear all;
+%% Initialize
+clc; close all; clearvars;
 
 %% Color parameter
-num_objects = 4; 
+num_objects = 4;
 linecolors = linspecer(num_objects, 'qualitative');
 LineColors = flipud(linecolors);
 
@@ -12,11 +10,11 @@ LineColors = flipud(linecolors);
 % fileID = fopen('/media/shapelim/UX9804/uHumans2_cloud/0730_w_gt_w_labels_to_skip/uhumans2__mesh_objects__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
 % mesh_objects = textscan(fileID, '%s %s %f %f %f %f');
 % fclose(fileID);
-% 
+%
 % fileID = fopen('/media/shapelim/UX9804/uHumans2_cloud/0730_w_gt_w_labels_to_skip/uhumans2__khronos__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
 % khronos = textscan(fileID, '%s %s %f %f %f %f');
 % fclose(fileID);
-% 
+%
 % fileID = fopen('/media/shapelim/UX9804/uHumans2_cloud/0730_w_gt_w_labels_to_skip/uhumans2__crisp__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
 % crisp = textscan(fileID, '%s %s %f %f %f %f');
 % fclose(fileID);
@@ -26,15 +24,15 @@ LineColors = flipud(linecolors);
 % fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__mesh_objects__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
 % mesh_objects = textscan(fileID, '%s %s %f %f %f %f');
 % fclose(fileID);
-% 
+%
 % fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__khronos__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
 % khronos = textscan(fileID, '%s %s %f %f %f %f');
 % fclose(fileID);
-% 
+%
 % fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__crisp_wo_cert__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
 % crisp_wo_certifier = textscan(fileID, '%s %s %f %f %f %f %f %f %f');
 % fclose(fileID);
-% 
+%
 % fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__crisp_wo_cert__ALIGNED_ROBOTS/chamfer_distances.txt', 'r');
 % crisp = textscan(fileID, '%s %s %f %f %f %f %f %f %f');
 % fclose(fileID);
@@ -56,25 +54,31 @@ crisp = textscan(fileID, '%s %s %d %f %f %f %f %f %f %f');
 fclose(fileID);
 
 disp("Loading data complete!");
-%% Plot parameters;
-MAX_RANGE = 0.5; 
-INTERVAL = 100;   
+
+%% Input data (total)
+% Uses mesh_objects, khronos, crisp_wo_certifier, crisp loaded above.
+
+%% Drawing parameters (total)
+MAX_RANGE = 0.5;
+INTERVAL = 100;
 lindwidth = 2.5;
-markerSize = 15; 
+markerSize = 15;
 LegendFontSize = 20;
-ticksFontSIze = 20;
+ticksFontSize = 20;
 XLabelFontSize = 20;  YLabelFontSize = 20;
 precision_thr = 0.21;
 IMAGE_WIDTH = 500;
 IMAGE_HEIGHT = 450;
-%% Draw cdf of chamfer distance: 
+
+%% Plot (total)
+%% Draw cdf of chamfer distance:
 figure("name", "Total", 'Position', [50, 50, IMAGE_WIDTH, IMAGE_HEIGHT]);
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
 set(gca, 'FontSize', 25);
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 
 
- 
+
 gap = MAX_RANGE / INTERVAL;
 x_linspace = 0:gap:MAX_RANGE;
 mesh_objects_cum = calcCDF(mesh_objects{4}, MAX_RANGE, INTERVAL) * 100;
@@ -101,26 +105,42 @@ plot(x_linspace, crisp_cum, '-o', 'Color', LineColors(2, :), "MarkerSize", marke
 lgd = legend({'Hydra','Khronos', 'Ours w/o RMCC', 'Ours'},'Location','southeast','NumColumns',1, 'fontsize', LegendFontSize);
 lgd.Interpreter = 'latex';
 grid on;
-set(gca, 'FontSize', ticksFontSIze);
+set(gca, 'FontSize', ticksFontSize);
 
 xlabel('Chamfer distance [m$^2$]', "FontSize", XLabelFontSize, "Interpreter", 'latex')
 ylabel('Percentage [\%]', "FontSize", YLabelFontSize, "Interpreter", 'latex')
 
-print(gcf, "imgs/cdf_for_chamfer_distance.png",'-dpng','-r300');
-% print -depsc 'imgs/cdf_for_chamfer_distance.eps'
+%% Save (total)
+exportgraphics(gcf, "imgs/cdf_for_chamfer_distance.png", 'Resolution', 300);
 exportgraphics(gcf, 'imgs/cdf_for_chamfer_distance.pdf', 'ContentType', 'vector');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Class-wise 
+%% Class-wise
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Input data (class5)
+% Uses mesh_objects, khronos, crisp_wo_certifier, crisp loaded above.
+
+%% Drawing parameters (class5)
+MAX_RANGE = 0.5;
+INTERVAL = 100;
+lindwidth = 2.5;
+markerSize = 15;
+LegendFontSize = 20;
+ticksFontSize = 20;
+XLabelFontSize = 20;  YLabelFontSize = 20;
+precision_thr = 0.21;
+IMAGE_WIDTH = 500;
+IMAGE_HEIGHT = 450;
+
+%% Plot (class5)
 %% Class 5
 figure("name", "Class 5 (Chair)", 'Position', [50, 700, IMAGE_WIDTH, IMAGE_HEIGHT]);
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 % Update this label
 target_class_label = 5;
-num_objects_in_gt = 33; % manually checked 
+num_objects_in_gt = 33; % manually checked
 
 gap = MAX_RANGE / num_objects_in_gt;
 x_linspace = 0:gap:MAX_RANGE;
@@ -162,22 +182,38 @@ plot(x_linspace, crisp_cum, '-o', 'Color', LineColors(2, :), "MarkerSize", marke
 lgd = legend({'Hydra','Khronos', 'Ours w/o RMCC', 'Ours'},'Location','southeast','NumColumns',1, 'fontsize', LegendFontSize);
 lgd.Interpreter = 'latex';
 grid on;
-set(gca, 'FontSize', ticksFontSIze);
+set(gca, 'FontSize', ticksFontSize);
 
 xlabel('Chamfer distance [m$^2$]', "FontSize", XLabelFontSize, "Interpreter", 'latex')
 ylabel('Percentage [\%]', "FontSize", YLabelFontSize, "Interpreter", 'latex')
 
-print(gcf, "imgs/cdf_for_chamfer_distance_class5.png",'-dpng','-r300');
-% print -depsc 'imgs/cdf_for_chamfer_distance.eps'
+%% Save (class5)
+exportgraphics(gcf, "imgs/cdf_for_chamfer_distance_class5.png", 'Resolution', 300);
 exportgraphics(gcf, 'imgs/cdf_for_chamfer_distance_class5.pdf', 'ContentType', 'vector');
 
+%% Input data (class7)
+% Uses mesh_objects, khronos, crisp_wo_certifier, crisp loaded above.
+
+%% Drawing parameters (class7)
+MAX_RANGE = 0.5;
+INTERVAL = 100;
+lindwidth = 2.5;
+markerSize = 15;
+LegendFontSize = 20;
+ticksFontSize = 20;
+XLabelFontSize = 20;  YLabelFontSize = 20;
+precision_thr = 0.21;
+IMAGE_WIDTH = 500;
+IMAGE_HEIGHT = 450;
+
+%% Plot (class7)
 %% Class 7
 figure("name", "Class 7 (Couch)", 'Position', [700, 700, IMAGE_WIDTH, IMAGE_HEIGHT]);
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 % Update this label
 target_class_label = 7;
-num_objects_in_gt = 19; % manually checked 
+num_objects_in_gt = 19; % manually checked
 
 gap = MAX_RANGE / num_objects_in_gt;
 x_linspace = 0:gap:MAX_RANGE;
@@ -219,22 +255,38 @@ plot(x_linspace, crisp_cum, '-o', 'Color', LineColors(2, :), "MarkerSize", marke
 lgd = legend({'Hydra','Khronos', 'Ours w/o RMCC', 'Ours'},'Location','southeast','NumColumns',1, 'fontsize', LegendFontSize);
 lgd.Interpreter = 'latex';
 grid on;
-set(gca, 'FontSize', ticksFontSIze);
+set(gca, 'FontSize', ticksFontSize);
 
 xlabel('Chamfer distance [m$^2$]', "FontSize", XLabelFontSize, "Interpreter", 'latex')
 ylabel('Percentage [\%]', "FontSize", YLabelFontSize, "Interpreter", 'latex')
 
-print(gcf, "imgs/cdf_for_chamfer_distance_class7.png",'-dpng','-r300');
-% print -depsc 'imgs/cdf_for_chamfer_distance.eps'
+%% Save (class7)
+exportgraphics(gcf, "imgs/cdf_for_chamfer_distance_class7.png", 'Resolution', 300);
 exportgraphics(gcf, 'imgs/cdf_for_chamfer_distance_class7.pdf', 'ContentType', 'vector');
 
+%% Input data (class13)
+% Uses mesh_objects, khronos, crisp_wo_certifier, crisp loaded above.
+
+%% Drawing parameters (class13)
+MAX_RANGE = 0.5;
+INTERVAL = 100;
+lindwidth = 2.5;
+markerSize = 15;
+LegendFontSize = 20;
+ticksFontSize = 20;
+XLabelFontSize = 20;  YLabelFontSize = 20;
+precision_thr = 0.21;
+IMAGE_WIDTH = 500;
+IMAGE_HEIGHT = 450;
+
+%% Plot (class13)
 %% Class 13
 figure("name", "Class 13 (plant)", 'Position', [50, 1500, IMAGE_WIDTH, IMAGE_HEIGHT]);
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 % Update this label
 target_class_label = 13;
-num_objects_in_gt = 12; % manually checked 
+num_objects_in_gt = 12; % manually checked
 
 gap = MAX_RANGE / num_objects_in_gt;
 x_linspace = 0:gap:MAX_RANGE;
@@ -276,16 +328,32 @@ plot(x_linspace, crisp_cum, '-o', 'Color', LineColors(2, :), "MarkerSize", marke
 lgd = legend({'Hydra','Khronos', 'Ours w/o RMCC', 'Ours'},'Location','southeast','NumColumns',1, 'fontsize', LegendFontSize);
 lgd.Interpreter = 'latex';
 grid on;
-set(gca, 'FontSize', ticksFontSIze);
+set(gca, 'FontSize', ticksFontSize);
 
 xlabel('Chamfer distance [m$^2$]', "FontSize", XLabelFontSize, "Interpreter", 'latex')
 ylabel('Percentage [\%]', "FontSize", YLabelFontSize, "Interpreter", 'latex')
 
-print(gcf, "imgs/cdf_for_chamfer_distance_class13.png",'-dpng','-r300');
-% print -depsc 'imgs/cdf_for_chamfer_distance.eps'
+%% Save (class13)
+exportgraphics(gcf, "imgs/cdf_for_chamfer_distance_class13.png", 'Resolution', 300);
 exportgraphics(gcf, 'imgs/cdf_for_chamfer_distance_class13.pdf', 'ContentType', 'vector');
 
 
+%% Input data (class18)
+% Uses mesh_objects, khronos, crisp_wo_certifier, crisp loaded above.
+
+%% Drawing parameters (class18)
+MAX_RANGE = 0.5;
+INTERVAL = 100;
+lindwidth = 2.5;
+markerSize = 15;
+LegendFontSize = 20;
+ticksFontSize = 20;
+XLabelFontSize = 20;  YLabelFontSize = 20;
+precision_thr = 0.21;
+IMAGE_WIDTH = 500;
+IMAGE_HEIGHT = 450;
+
+%% Plot (class18)
 %% Class 18
 figure("name", "Class 18 (bin)", 'Position', [700, 1500, IMAGE_WIDTH, IMAGE_HEIGHT]);
 set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02))
@@ -342,11 +410,11 @@ lgd = legend({'Hydra','Khronos', 'Ours w/o RMCC', 'Ours'}, ...
     'Location','southeast','NumColumns',1, 'fontsize', LegendFontSize);
 lgd.Interpreter = 'latex';
 grid on;
-set(gca, 'FontSize', ticksFontSIze);
+set(gca, 'FontSize', ticksFontSize);
 
 xlabel('Chamfer distance [m$^2$]', "FontSize", XLabelFontSize, "Interpreter", 'latex')
 ylabel('Percentage [\%]', "FontSize", YLabelFontSize, "Interpreter", 'latex')
 
-print(gcf, "imgs/cdf_for_chamfer_distance_class18.png",'-dpng','-r300');
-% print -depsc 'imgs/cdf_for_chamfer_distance.eps'
+%% Save (class18)
+exportgraphics(gcf, "imgs/cdf_for_chamfer_distance_class18.png", 'Resolution', 300);
 exportgraphics(gcf, 'imgs/cdf_for_chamfer_distance_class18.pdf', 'ContentType', 'vector');
