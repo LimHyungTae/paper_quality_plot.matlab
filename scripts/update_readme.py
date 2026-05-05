@@ -13,15 +13,24 @@ from typing import List, Dict, Tuple, Optional
 def find_matlab_scripts() -> Dict[str, str]:
     """Find all MATLAB plot scripts and extract their descriptions"""
     scripts = {}
-    
-    # Find all plot_*.m files
-    plot_files = glob.glob("plot_*.m")
-    
+
+    # Plot scripts now follow `<category>_<distinctive>.m`. List the category
+    # prefixes used in this repo (no `plot_` prefix anymore).
+    prefixes = (
+        "linegraph_", "barplot_", "boxplot_", "cdf_", "pdf_",
+        "horizontal_bars_", "prcurve_", "scatter_heatmap_",
+        "tilelayout_", "area_", "trajectory_",
+    )
+    plot_files = [
+        f for f in glob.glob("*.m")
+        if any(Path(f).name.startswith(p) for p in prefixes)
+    ]
+
     for script in plot_files:
         # Extract script name without extension
         script_name = Path(script).stem
         scripts[script_name] = script
-        
+
     return scripts
 
 def get_image_info() -> List[Dict]:
@@ -54,52 +63,114 @@ def get_image_info() -> List[Dict]:
 
 def find_corresponding_script(image_stem: str, scripts: Dict[str, str]) -> Optional[str]:
     """Find the MATLAB script that likely generated this image"""
-    
-    # Direct mapping patterns
+
+    # Direct image-stem → script-name mappings (most reliable source of truth)
     direct_mappings = {
-        'total_cdf_alpha': 'plot_cdf',
-        'total_cdf_beta': 'plot_cdf', 
-        'erasor_pdf_diff_percentage': 'plot_pdf',
-        'Navigation_trajectory': 'plot_trajectory',
-        'tims_rotation_v30': 'plot_scatter_w_heatmap',
-        'caros_rotor_speed': 'plot_linegraph1',
-        'caros_pitch_alpha': 'plot_linegraph1',
-        'caros_orientation': 'plot_linegraph1',
-        'caros_position': 'plot_linegraph1',
-        'erasor_ground_percentage': 'plot_linegraph2',
-        'erasor_ground_rejection': 'plot_linegraph2',
-        'box_plot2_r300': 'plot_boxplot2',
-        'boxplot1': 'plot_boxplots',
-        'ground_bar_plot_v2': 'plot_barplot',
-        'final_tilelayout': 'plot_tilelayout',
-        'time_stacked': 'plot_time_stacked'
+        # CDF plots
+        'total_cdf_alpha': 'cdf_angles',
+        'total_cdf_beta': 'cdf_angles',
+        # PDF plot
+        'erasor_pdf_diff_percentage': 'pdf_erasor_scan_ratio',
+        # Trajectory plots
+        'Navigation_trajectory': 'trajectory_3d_utm',
+        'tims_rotation_v30': 'scatter_heatmap_weights',
+        # caros (4 panels)
+        'caros_rotor_speed': 'linegraph_caros',
+        'caros_pitch_alpha': 'linegraph_caros',
+        'caros_orientation': 'linegraph_caros',
+        'caros_position': 'linegraph_caros',
+        # ERASOR ground threshold (4 panels)
+        'erasor_ground_preservation': 'linegraph_erasor_ground',
+        'erasor_ground_rejection': 'linegraph_erasor_ground',
+        'erasor_ground_percentage': 'linegraph_erasor_ground',
+        'erasor_ground_rel': 'linegraph_erasor_ground',
+        # Boxplots
+        'box_plot2_r300': 'boxplot_runtime',
+        'boxplot1': 'boxplot_aoa_ssa',
+        'boxplot2': 'boxplot_aoa_ssa',
+        # GPF bar chart
+        'ground_bar_plot_v2': 'barplot_gpf_precision',
+        # Tilelayout
+        'final_tilelayout': 'tilelayout_pasga',
+        # Stacked area
+        'time_stacked': 'area_xavier_time',
+        # Chamfer CDF (multi-panel)
+        'cdf_for_chamfer_distance': 'cdf_chamfer',
+        'cdf_for_chamfer_distance_class5': 'cdf_chamfer',
+        'cdf_for_chamfer_distance_class7': 'cdf_chamfer',
+        'cdf_for_chamfer_distance_class13': 'cdf_chamfer',
+        'cdf_for_chamfer_distance_class18': 'cdf_chamfer',
+        # Hydra 2.0 PR/recall/F1 (collision: linegraph_hydra_pr.m and
+        # linegraph_hydra_sam3d.m write to the same stems; pick the active
+        # one — linegraph_hydra_pr is the latest paper variant)
+        'hydra2_0_precision': 'linegraph_hydra_pr',
+        'hydra2_0_recall': 'linegraph_hydra_pr',
+        'hydra2_0_f1': 'linegraph_hydra_pr',
+        # PR curve (separate from hydra2_0_*)
+        'precision_recall_curve': 'prcurve_hydra',
+        'f1_vs_threshold': 'prcurve_hydra',
+        # B-mIoU line graph (collision: linegraph_biou_pxthr and linegraph_biou_masking
+        # both write biou_line_graph.{png,pdf}; link to pxthr as the primary)
+        'biou_line_graph': 'linegraph_biou_pxthr',
+        # B-mIoU horizontal bars per pixel threshold (HRNet)
+        'biou_horizontal_bar_w_hrnet': 'horizontal_bars_hrnet',
+        'biou_horizontal_bar_w_hrnet_3px': 'horizontal_bars_hrnet',
+        'biou_horizontal_bar_w_hrnet_7px': 'horizontal_bars_hrnet',
+        'biou_horizontal_bar_w_hrnet_10px': 'horizontal_bars_hrnet',
+        'biou_horizontal_bar_w_hrnet_20px': 'horizontal_bars_hrnet',
+        # mIoU horizontal bars per backbone (DeepLabv3 file generates 4 figures)
+        'horizontal_bar_w_deeplabv3': 'horizontal_bars_deeplabv3',
+        'horizontal_bar_w_hrnet': 'horizontal_bars_deeplabv3',
+        'horizontal_bar_w_ocrnet': 'horizontal_bars_deeplabv3',
+        'horizontal_bar_w_upernet': 'horizontal_bars_deeplabv3',
+        # VGGT confidence-threshold sweep (4 panels)
+        'vggt_ate': 'linegraph_vggt',
+        'vggt_accuracy': 'linegraph_vggt',
+        'vggt_completion': 'linegraph_vggt',
+        'vggt_chamfer': 'linegraph_vggt',
+        # Success-rate bars (CamelCase output stems — pattern-matcher misses these)
+        'SuccessRate1_quatro_pp': 'barplot_success_rate',
+        'SuccessRate2_quatro_pp': 'barplot_success_rate',
+        'RANSAC10K_success_rate': 'barplot_success_rate',
+        'FGR_success_rate': 'barplot_success_rate',
+        'TEASER_success_rate': 'barplot_success_rate',
+        # Quatro avg computational time (active + commented-alt outputs)
+        'average_computational_time_v2_i7': 'barplot_quatro_runtime',
+        'average_computational_time_v2_i9': 'barplot_quatro_runtime',
+        # Max-clique counts (CWD-root outputs)
+        'num_MC': 'barplot_maxclique',
+        'num_rot_inlier': 'barplot_maxclique',
+        'num_trans_inlier': 'barplot_maxclique',
     }
-    
+
     # Check direct mappings first
     if image_stem in direct_mappings:
         script_name = direct_mappings[image_stem]
         if script_name in scripts:
             return scripts[script_name]
-    
-    # Pattern-based matching
+
+    # Pattern-based fallback: derive a key from each script name and check
+    # whether the image stem contains it. Earlier prefixes are stripped so the
+    # remaining `<distinctive>` portion matches the image.
+    prefix_strip = (
+        "linegraph_", "barplot_", "boxplot_", "cdf_", "pdf_",
+        "horizontal_bars_", "prcurve_", "scatter_heatmap_",
+        "tilelayout_", "area_", "trajectory_",
+    )
     for script_name, script_path in scripts.items():
-        # Extract key words from script name
-        script_key = script_name.replace('plot_', '')
-        
-        # Check if script key is in image name
-        if script_key in image_stem.lower():
+        script_key = script_name
+        for p in prefix_strip:
+            if script_key.startswith(p):
+                script_key = script_key[len(p):]
+                break
+
+        # `_train` is a common substring inside VBR trajectory image stems
+        if script_key == "vbr" and "_train" in image_stem and "_gt" in image_stem:
             return script_path
-            
-        # Check for partial matches
-        if 'cdf' in script_key and 'cdf' in image_stem:
+
+        if script_key and script_key in image_stem.lower():
             return script_path
-        if 'bar' in script_key and 'bar' in image_stem:
-            return script_path
-        if 'box' in script_key and 'box' in image_stem:
-            return script_path
-        if 'line' in script_key and any(word in image_stem for word in ['erasor', 'caros']):
-            return script_path
-    
+
     return None
 
 def create_image_grid(images: List[Dict], scripts: Dict[str, str], cols: int = 3) -> str:
