@@ -1,14 +1,12 @@
-%% CDF
-clc
-close all;
-clear all;
+%% Initialize
+clc; close all; clearvars;
 
-%% Color parameter
-num_objects = 4; 
+%% Input data (pr_curve)
+num_objects = 4;
 linecolors = linspecer(num_objects, 'qualitative');
 LineColors = flipud(linecolors);
 
-%% Load output file
+% Load output file
 % Mesh objects
 fileID = fopen('/home/shapelim/multi_ws/src/hydra_multi_system/hydra_multi_evaluation/scripts/results/0804_w_gt_w_plants/uhumans2__mesh_objects__ALIGNED_ROBOTS/dists_for_precision.txt', 'r');
 precision_data_mesh_objects = textscan(fileID, '%s %s %f %f');
@@ -47,19 +45,13 @@ fclose(fileID);
 
 
 disp("Loading data complete!");
-%% Plot parameters;
-MAX_RANGE = 0.5; 
-INTERVAL = 100;   
-linewidth = 2.5;
-markerSize = 15; 
-LegendFontSize = 20;
-ticksFontSIze = 20;
-XLabelFontSize = 20;  YLabelFontSize = 20;
 
-%% === Threshold linspace ===
+% === Threshold linspace ===
+MAX_RANGE = 0.5;
+INTERVAL = 100;
 thresholds = linspace(0, MAX_RANGE, INTERVAL + 1);
 
-%% === Compute PR Curves ===
+% === Compute PR Curves ===
 [prec_mesh, rec_mesh] = compute_precision_recall( ...
     precision_data_mesh_objects{4}, recall_data_mesh_objects{4}, thresholds);
 [prec_khronos, rec_khronos] = compute_precision_recall( ...
@@ -69,7 +61,28 @@ thresholds = linspace(0, MAX_RANGE, INTERVAL + 1);
 [prec_crisp, rec_crisp] = compute_precision_recall( ...
     precision_data_crisp{4}, recall_data_crisp{4}, thresholds);
 
-%% === Plot PR Curve ===
+% === Compute F1 scores (per threshold) ===
+epsv = 1e-12;
+f1_mesh     = 2 .* (prec_mesh .* rec_mesh)       ./ (prec_mesh + rec_mesh + epsv);
+f1_khronos  = 2 .* (prec_khronos .* rec_khronos) ./ (prec_khronos + rec_khronos + epsv);
+f1_crisp_wo = 2 .* (prec_crisp_wo .* rec_crisp_wo) ./ (prec_crisp_wo + rec_crisp_wo + epsv);
+f1_crisp    = 2 .* (prec_crisp .* rec_crisp)     ./ (prec_crisp + rec_crisp + epsv);
+
+% 각 방법의 최대 F1과 해당 지점(Recall, Precision, threshold) 추출
+[bestF1_mesh,     i_mesh]     = max(f1_mesh);     th_mesh     = thresholds(i_mesh);
+[bestF1_khronos,  i_khronos]  = max(f1_khronos);  th_khronos  = thresholds(i_khronos);
+[bestF1_crisp_wo, i_crisp_wo] = max(f1_crisp_wo); th_crisp_wo = thresholds(i_crisp_wo);
+[bestF1_crisp,    i_crisp]    = max(f1_crisp);    th_crisp    = thresholds(i_crisp);
+
+%% Drawing parameters (pr_curve)
+linewidth = 2.5;
+markerSize = 15;
+LegendFontSize = 20;
+ticksFontSIze = 20;
+XLabelFontSize = 20;  YLabelFontSize = 20;
+
+%% Plot (pr_curve)
+% === Plot PR Curve ===
 figure("name", "Precision-Recall", 'Position', [50, 50, 500, 500]);
 set(gca, 'LooseInset', max(get(gca, 'TightInset'), 0.02));
 set(gca, 'FontSize', ticksFontSIze);
@@ -98,22 +111,6 @@ if ~exist('imgs', 'dir')
     mkdir('imgs');
 end
 
-print(gcf, "imgs/precision_recall_curve.png", '-dpng', '-r300');
-exportgraphics(gcf, 'imgs/precision_recall_curve.pdf', 'ContentType', 'vector');
-
-%% === Compute F1 scores (per threshold) ===
-epsv = 1e-12;
-f1_mesh     = 2 .* (prec_mesh .* rec_mesh)       ./ (prec_mesh + rec_mesh + epsv);
-f1_khronos  = 2 .* (prec_khronos .* rec_khronos) ./ (prec_khronos + rec_khronos + epsv);
-f1_crisp_wo = 2 .* (prec_crisp_wo .* rec_crisp_wo) ./ (prec_crisp_wo + rec_crisp_wo + epsv);
-f1_crisp    = 2 .* (prec_crisp .* rec_crisp)     ./ (prec_crisp + rec_crisp + epsv);
-
-% 각 방법의 최대 F1과 해당 지점(Recall, Precision, threshold) 추출
-[bestF1_mesh,     i_mesh]     = max(f1_mesh);     th_mesh     = thresholds(i_mesh);
-[bestF1_khronos,  i_khronos]  = max(f1_khronos);  th_khronos  = thresholds(i_khronos);
-[bestF1_crisp_wo, i_crisp_wo] = max(f1_crisp_wo); th_crisp_wo = thresholds(i_crisp_wo);
-[bestF1_crisp,    i_crisp]    = max(f1_crisp);    th_crisp    = thresholds(i_crisp);
-
 % 최대 F1 지점에 강조 마커 추가 (선택)
 plot(rec_mesh(i_mesh),         prec_mesh(i_mesh),         'p', 'MarkerSize', markerSize+2, 'LineWidth', linewidth, 'Color', LineColors(3,:));
 plot(rec_khronos(i_khronos),   prec_khronos(i_khronos),   'p', 'MarkerSize', markerSize+2, 'LineWidth', linewidth, 'Color', LineColors(1,:));
@@ -129,6 +126,21 @@ lgd = legend({ ...
 }, 'Location','southwest','NumColumns',1,'fontsize',LegendFontSize);
 lgd.Interpreter = 'latex';
 
+%% Save (pr_curve)
+exportgraphics(gcf, "imgs/precision_recall_curve.png", 'Resolution', 300);
+exportgraphics(gcf, 'imgs/precision_recall_curve.pdf', 'ContentType', 'vector');
+
+%% Input data (f1_vs_threshold)
+% Reuses thresholds and f1_* computed in the pr_curve section above.
+
+%% Drawing parameters (f1_vs_threshold)
+linewidth = 2.5;
+markerSize = 15;
+LegendFontSize = 20;
+ticksFontSIze = 20;
+XLabelFontSize = 20;  YLabelFontSize = 20;
+
+%% Plot (f1_vs_threshold)
 figure("name","F1 vs Threshold",'Position',[580, 50, 500, 500]);
 set(gca,'FontSize',ticksFontSIze);
 plot(thresholds, f1_mesh,     '-.^','LineWidth',linewidth); hold on;
@@ -140,10 +152,11 @@ ylabel('F1','Interpreter','latex','FontSize',YLabelFontSize);
 legend({'Hydra','Khronos','Ours w/o Cert.','Ours'},'Location','southwest','fontsize',LegendFontSize,'Interpreter','latex');
 
 if ~exist('imgs','dir'); mkdir('imgs'); end
-print(gcf,"imgs/f1_vs_threshold.png",'-dpng','-r300');
+
+%% Save (f1_vs_threshold)
+exportgraphics(gcf, "imgs/f1_vs_threshold.png", 'Resolution', 300);
 exportgraphics(gcf,'imgs/f1_vs_threshold.pdf','ContentType','vector');
 
-%%
 % 찾고 싶은 threshold 값
 target_th = 0.1;
 
@@ -161,7 +174,7 @@ fprintf('Khronos  F1 at t=0.1: %.4f\n', f1_at_01_khronos);
 fprintf('Ours w/o Cert. F1 at t=0.1: %.4f\n', f1_at_01_crisp_wo);
 fprintf('Ours     F1 at t=0.1: %.4f\n', f1_at_01_crisp);
 
-%% === Precision-Recall 함수 정의 ===
+% === Precision-Recall 함수 정의 ===
 function [precisions, recalls] = compute_precision_recall(dist_pred, dist_gt, thresholds)
     N_pred = length(dist_pred);
     N_gt = length(dist_gt);
