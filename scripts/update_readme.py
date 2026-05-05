@@ -41,8 +41,11 @@ def get_image_info() -> List[Dict]:
     if not img_dir.exists():
         return images
     
-    # Supported image formats
-    extensions = ['*.png', '*.jpg', '*.jpeg', '*.eps', '*.pdf']
+    # Browser-renderable image formats only.
+    # `.eps` and `.pdf` files are saved alongside but are NOT linked here —
+    # browsers render them as broken images. The PNG sibling is what shows
+    # in the README; the vector counterpart is still on disk for paper use.
+    extensions = ['*.png', '*.jpg', '*.jpeg', '*.gif', '*.svg', '*.webp']
     
     for ext in extensions:
         for img_path in img_dir.glob(ext):
