@@ -5,7 +5,7 @@
     <br />
     <p><strong><em>The actual MATLAB plotting code Hyungtae Lim has used across his published papers.</em></strong></p>
     <p>All materials are from <a href="http://urobot.kaist.ac.kr/">Urban Robotics Lab.</a> @KAIST &nbsp;·&nbsp; Author: Hyungtae Lim (shapelim@kaist.ac.kr)</p>
-    <p><strong>(01.09.25)</strong> I have now given up on sticking solely to MATLAB. <a href="https://github.com/garrettj403/SciencePlots">SciencePlots</a> is truly an excellent tool.</p>
+    <p><strong>(01.09.25)</strong> I have now given up on sticking solely to MATLAB (still prefer MATLAB though). <a href="https://github.com/garrettj403/SciencePlots">SciencePlots</a> is truly an excellent tool.</p>
 </div>
 
 ---
