@@ -1,9 +1,9 @@
-clc; clear all; close all;
+%% Initialize
+clc; close all; clearvars;
 %% YOU CAN ADJUST THE BELOW PARAMETER
-iter = 0;
+iter = 0;   % user-adjusted toggle: 0 = initial frame, >0 = per-iteration frame
 
-%%
-
+%% Input data
 abs_path = "materials/weight";
 
 rot_path = abs_path + "/0176_SONNY_rot.txt";
@@ -16,7 +16,6 @@ tgt = load(tims_tgt_path);
 src = load(tims_src_path);
 weights = load(weights_path);
 
-%%
 if iter == 0
     width_ = 500;
     rot = eye(2);
@@ -29,12 +28,6 @@ else
     rot(2, 2) = rot_iter(iter, 4);
 end
 
-figure('Position', [100, 100, width_, 400])
-set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02));
-set(groot, 'defaultAxesTickLabelInterpreter','latex');
-
-
-
 src_xy = rot * (src(1:end, 1:2)')
 src_xy = src_xy';
 tgt_x = tgt(1:end, 1);
@@ -42,8 +35,6 @@ src_x = src_xy(1:end, 1);
 tgt_y = tgt(1:end, 2);
 src_y = src_xy(1:end, 2);
 
-num_ticks = 100;
-cd = [(jet(num_ticks))].';
 min_w = 0;
 max_w = max(weights, [], 'all');
 
@@ -52,7 +43,23 @@ if iter == 0
 else
     weights_for_iter = weights(iter, 1:end);
 end
-mz = 400;
+
+%% Drawing parameters
+% --- Sizes ---
+num_ticks = 100;
+mz        = 400;
+% --- Fonts ---
+fs        = 18
+FontSize  = 17;
+% --- Colors ---
+cd = [(jet(num_ticks))].';
+
+%% Plot
+figure('Position', [100, 100, width_, 400])
+set(gca,'LooseInset', max(get(gca,'TightInset'), 0.02));
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
+
+
 
 idx = 1;
 for w_ = weights_for_iter
@@ -68,7 +75,7 @@ end
 if iter == 1
 %     text(-34, 22,'$w^{(1)}_k\simeq0$', 'Interpreter','latex', 'FontSize', 45)
     plot([-10, 8, 8, -10, -10], [-12, -12, 12, 12, -12], 'r--', 'LineWidth', 4);
-    
+
 elseif iter == 3
     text(-19, 19,'$\hat{w}^{(3)}_k\rightarrow0$', 'Interpreter','latex', 'FontSize', 25)
     plot([-10, 8, 8, -10, -10], [-12, -12, 12, 12, -12], 'r--', 'LineWidth', 4);
@@ -81,11 +88,10 @@ for i=1:num_pt
     else
         if weights(iter, i) > 0.5
             p = plot([tgt_x(i) src_x(i)], [tgt_y(i) src_y(i)], "k-.", "LineWidth", 4.0);
-        end   
+        end
     end
-    p.Annotation.LegendInformation.IconDisplayStyle = 'off';    
+    p.Annotation.LegendInformation.IconDisplayStyle = 'off';
 end
-fs = 18
 xlabel("X", 'Interpreter', 'latex', 'FontSize', fs);
 xlabel("Y", 'Interpreter', 'latex', 'FontSize', fs);
 if iter == 0
@@ -98,14 +104,13 @@ if iter == 0
 
     objhl = findobj(objh, 'type', 'line'); %// objects of legend of type line
     set(objhl, 'Markersize', 24); %// set marker size as desired
-    % or for Patch plots 
+    % or for Patch plots
     objhl = findobj(objh, 'type', 'patch'); % objects of legend of type patch
     set(objhl, 'Markersize', 24); % set marker size as desired
-    
+
 end
 
 
-FontSize = 17;
 xlabel("X", 'Interpreter', 'latex', 'FontSize', FontSize);
 ylabel("Y", 'Interpreter', 'latex', 'FontSize', FontSize);
 iter_title = "Iteration: " + num2str(iter);
@@ -116,6 +121,7 @@ axis equal
 xlim([-40, 40]);
 ylim([-40, 40]);
 
+%% Save
 save_path = "imgs/tims_rotation_v3" + num2str(iter);
-saveas(gcf, save_path, "png");
-print -depsc 'imgs/tims_rotation_v3_0.eps'
+exportgraphics(gcf, save_path + ".png", 'Resolution', 300);
+exportgraphics(gcf, save_path + ".pdf", 'ContentType', 'vector');
