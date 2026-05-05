@@ -1,7 +1,6 @@
 %% Initialize
 clc; close all; clearvars;
 set(groot, 'defaultAxesTickLabelInterpreter','latex'); %set(groot, 'defaultLegendInterpreter','latex');
-% Note: this script does not write to disk; figure is interactive only.
 
 %% Input data
 % Presicion of GPF vs R-GPF
@@ -55,3 +54,7 @@ LineColors = flipud(linecolors);
 
 b(1).FaceColor = LineColors(1,:);
 b(2).FaceColor = LineColors(2,:);
+
+%% Save
+exportgraphics(gcf, "imgs/ground_bar_plot_v2.png", 'Resolution', 300);
+exportgraphics(gcf, "imgs/ground_bar_plot_v2.pdf", 'ContentType', 'vector');
