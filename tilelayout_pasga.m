@@ -1,10 +1,10 @@
-%% Tilelayout example
-clc; close; clear;
+%% Initialize
+clc; close all; clearvars;
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 
 load materials/tilelayout.mat
 
-%%
+%% Input data
 Models = {'32/108';'24/72';"16/54";'16/54';'16/54';'16/54'; '16/54'; '16/54'};
 ytick_label_ = [0:10:100];
 % rings = {'$\mathrm{N_{r}}$','32', '24', '16', '16', '16', '16', '16', '16'};
@@ -15,14 +15,18 @@ sects = {'\itN_{\theta}'   , '108',' 72', ' 54', ' 54', ' 54', ' 54', ' 54', ' 5
 thrds = {'\it\theta_{\tau}', '  0 '  ,'  0' , '  0' ,' 15' , ' 30', ' 45', ' 60', ' 75'};
 xtickArray= [rings; sects; thrds];
 xtickLabels = strtrim(sprintf('%s\\newline%s\\newline%s\n', xtickArray{:}));
+
+%% Drawing parameters
 xtick_label_fontsize = 25;
+
+%% Plot
 figure('Position', [10, 10, 1600, 800])
 t1 = tiledlayout(2,2);
 t1.Padding = 'compact';
 
 
 p_plot = nexttile;
-filledErrorbarPLot(Ms', [num_analysis_p(:,1); thd_analysis_p(2:end,1)], [num_analysis_p(:,2); thd_analysis_p(2:end,2)]) 
+filledErrorbarPLot(Ms', [num_analysis_p(:,1); thd_analysis_p(2:end,1)], [num_analysis_p(:,2); thd_analysis_p(2:end,2)])
 set(gca,'TickLabelInterpreter','tex')
 set(gca,'XTick',[0,Ms], 'XTickLabel',xtickLabels, 'FontSize', xtick_label_fontsize)
 grid on
@@ -41,7 +45,7 @@ r_plot.YLim = [80 100];
 
 f1_plot = nexttile;
 filledErrorbarPLot(Ms', [num_analysis_f(:,1); thd_analysis_f(2:end,1)], [num_analysis_f(:,2); thd_analysis_f(2:end,2)])
-% ylabel("F_{1}", "FontSize", 15, "Interpreter", 'latex') 
+% ylabel("F_{1}", "FontSize", 15, "Interpreter", 'latex')
 set(gca,'TickLabelInterpreter','tex')
 set(gca,'XTick',[0,Ms], 'XTickLabel',xtickLabels, 'FontSize', xtick_label_fontsize)
 grid on
@@ -62,7 +66,10 @@ a_plot.YLim = [50 100];
 
 linkaxes( [p_plot, r_plot, f1_plot, a_plot] , 'x')
 p_plot.XLim = [0 (size(Ms,2)+1.0)];
-saveas(gcf,'./imgs/final_tilelayout.png')
+
+%% Save
+exportgraphics(gcf, "imgs/final_tilelayout.png", 'Resolution', 300);
+exportgraphics(gcf, "imgs/final_tilelayout.pdf", 'ContentType', 'vector');
 
 
 
@@ -71,7 +78,7 @@ function plots = filledErrorbarPLot(x_vector, mean_vector, std_vector)
     bar_size = 0.25;
     color = 'b';
     alpha = 0.3;
-    
+
     hold on
     plots(1) = plot(x_vector, mean_vector,'-ko', 'LineWidth', 1.5, 'MarkerFaceColor', 'k', 'MarkerSize', 10)
     if (size(std_vector) ~= 0)
@@ -79,7 +86,7 @@ function plots = filledErrorbarPLot(x_vector, mean_vector, std_vector)
         x = x_vector(ii);
         mean = mean_vector(ii);
         std = std_vector(ii);
-        
+
         X = [x-bar_size; x+bar_size; x+bar_size; x-bar_size];
         Y = [mean+std ; mean+std ; mean-std ; mean-std];
         plots(ii+1) = fill(X, Y, color, 'FaceAlpha', alpha,'linestyle', 'none' );
@@ -90,5 +97,5 @@ function plots = filledErrorbarPLot(x_vector, mean_vector, std_vector)
     end
 
     plot(x_vector, mean_vector,'-ko', 'LineWidth', 3.5, 'MarkerFaceColor', 'k', 'MarkerSize', 10)
-    
+
 end
