@@ -1,24 +1,17 @@
 #!/usr/bin/env python3
 """
-Auto-update the Generated Figures section of README.md.
+Auto-update the Visualization Gallery section of README.md.
 
-Shows ONE representative image per MATLAB plot script, grouped by category
-(line graph, horizontal bar, etc.). The categorisation and the picked image
-per script are hard-coded below since each script's "primary" output is a
-judgement call about which figure best represents the script.
+The README is the storefront for this repository, so the gallery is rendered
+as a compact fixed-width thumbnail grid instead of full-size markdown images.
+Each card links directly to the MATLAB script that produced the preview, and
+the script index below the grid keeps the complete mapping scan-friendly.
 
-Scripts whose output collides with a sibling (e.g. linegraph_biou_pxthr.m
-and linegraph_biou_masking.m both produce imgs/biou_line_graph.png) appear
-once; the other sibling is documented in a small "Other variants" footnote
-below the gallery.
-
-Header (centred title block) and footer (Description section) are preserved
-verbatim — only the gallery between the section heading and the next major
+Header (centred title block) and footer notes are preserved
+verbatim; only the gallery between the section heading and the next major
 heading is regenerated.
 """
 
-import os
-import re
 from pathlib import Path
 from typing import List, Tuple
 
@@ -34,7 +27,7 @@ from typing import List, Tuple
 GROUPS: List[Tuple[str, List[Tuple[str, str, str]]]] = [
     ("Line graph", [
         ("linegraph_biou_pxthr",     "biou_line_graph.png",              "B-mIoU vs pixel threshold"),
-        ("linegraph_caros",          "caros_rotor_speed.png",            "caros flight data"),
+        ("linegraph_caros",          "caros_rotor_speed.png",            "Caros flight data"),
         ("linegraph_erasor_ground",  "erasor_ground_preservation.png",   "ERASOR ground threshold"),
         ("linegraph_hydra_pr",       "hydra2_0_precision.png",           "Hydra2.0 PR-curve"),
         ("linegraph_vggt",           "vggt_ate.png",                     "VGGT confidence sweep"),
@@ -45,16 +38,16 @@ GROUPS: List[Tuple[str, List[Tuple[str, str, str]]]] = [
     ]),
     ("Vertical bar", [
         ("barplot_gpf_precision",    "ground_bar_plot_v2.png",                 "GPF vs R-GPF precision"),
-        ("barplot_maxclique",        "num_MC.png",                             "max-clique inlier counts"),
+        ("barplot_maxclique",        "num_MC.png",                             "Max-clique inlier counts"),
         ("barplot_quatro_runtime",   "average_computational_time_v2_i7.png",   "Quatro runtime breakdown"),
-        ("barplot_success_rate",     "SuccessRate1_quatro_pp.png",             "success rate across methods"),
+        ("barplot_success_rate",     "SuccessRate1_quatro_pp.png",             "Success rate across methods"),
     ]),
     ("Box plot", [
         ("boxplot_aoa_ssa", "boxplot1.png",         "AOA / SSA error"),
-        ("boxplot_runtime", "box_plot2_r300.png",   "method runtime"),
+        ("boxplot_runtime", "box_plot2_r300.png",   "Method runtime"),
     ]),
     ("CDF", [
-        ("cdf_angles",  "total_cdf_alpha.png",            "alpha / beta angle CDFs"),
+        ("cdf_angles",  "total_cdf_alpha.png",            "Alpha / beta angle CDFs"),
         ("cdf_chamfer", "cdf_for_chamfer_distance.png",   "Chamfer-distance CDF"),
     ]),
     ("PDF", [
@@ -86,68 +79,99 @@ COLLISION_NOTES: List[Tuple[str, str]] = [
     ("linegraph_hydra_sam3d",   "linegraph_hydra_pr"),
 ]
 
-GALLERY_HEADING = "## :art: Generated Figures"
-DESCRIPTION_HEADING = "## :page_facing_up: Description"
-COLS = 3
+GALLERY_HEADING = "## :art: Visualization Gallery"
+LEGACY_GALLERY_HEADINGS = [
+    GALLERY_HEADING,
+    "## :art: Generated Figures",
+    "## Generated Figures",
+]
+FOOTER_HEADING = "## :page_facing_up: Notes"
+LEGACY_FOOTER_HEADINGS = [
+    FOOTER_HEADING,
+    "## :page_facing_up: Description",
+    "# Description",
+]
+CARD_COLS = 4
+CARD_IMG_WIDTH = 180
 
 
 # ----------------------------------------------------------------------
 # Implementation
 # ----------------------------------------------------------------------
 
-def render_group(title: str, entries: List[Tuple[str, str, str]]) -> str:
-    """Render one category as a sub-heading + 3-column markdown table."""
-    if not entries:
-        return ""
+def flatten_groups() -> List[Tuple[str, str, str, str]]:
+    """Return gallery entries as (category, script_stem, image_name, caption)."""
+    entries = []
+    for category, group_entries in GROUPS:
+        for script_stem, image_name, caption in group_entries:
+            entries.append((category, script_stem, image_name, caption))
+    return entries
 
-    out = [f"### {title}", ""]
-    for i in range(0, len(entries), COLS):
-        chunk = entries[i:i + COLS]
 
-        # Pad short trailing rows
-        while len(chunk) < COLS:
-            chunk = chunk + [("", "", "")]
+def render_card(category: str, script_stem: str, image_name: str, caption: str) -> str:
+    img_path = f"./imgs/{image_name}"
+    script_file = f"{script_stem}.m"
+    return "\n".join([
+        '<td width="25%" align="center" valign="top">',
+        f'  <a href="{script_file}"><img src="{img_path}" alt="{caption}" width="{CARD_IMG_WIDTH}" /></a><br />',
+        f"  <strong>{caption}</strong><br />",
+        f"  <sub>{category}</sub><br />",
+        f'  <a href="{script_file}"><code>{script_file}</code></a>',
+        "</td>",
+    ])
 
-        headers, seps, imgs, links = [], [], [], []
-        for script_stem, image_name, caption in chunk:
-            if not script_stem:
-                headers.append("")
-                seps.append("")
-                imgs.append("")
-                links.append("")
-                continue
 
-            img_path = f"./imgs/{image_name}"
-            script_file = f"{script_stem}.m"
+def render_gallery_grid() -> str:
+    """Render all representative figures as a compact HTML thumbnail grid."""
+    entries = flatten_groups()
+    out = ["<table>"]
+    for i in range(0, len(entries), CARD_COLS):
+        out.append("<tr>")
+        for category, script_stem, image_name, caption in entries[i:i + CARD_COLS]:
+            out.append(render_card(category, script_stem, image_name, caption))
+        out.append("</tr>")
+    out.append("</table>")
+    return "\n".join(out) + "\n"
 
-            headers.append(caption)
-            seps.append(":---:")
-            imgs.append(f"![{caption}]({img_path})")
-            links.append(f"[`{script_file}`]({script_file})")
 
-        out.append("| " + " | ".join(headers) + " |")
-        out.append("| " + " | ".join(seps) + " |")
-        out.append("| " + " | ".join(imgs) + " |")
-        out.append("| " + " | ".join(links) + " |")
-        out.append("")
+def render_script_index() -> str:
+    """Render a compact category-to-script map below the visual gallery."""
+    out = [
+        "### Script index",
+        "",
+        "| Type | Scripts | Representative outputs |",
+        "| :--- | :--- | :--- |",
+    ]
+    for category, entries in GROUPS:
+        scripts = "<br />".join(
+            f"[`{script_stem}.m`]({script_stem}.m)"
+            for script_stem, _, _ in entries
+        )
+        outputs = "<br />".join(
+            f"[`{image_name}`](imgs/{image_name})"
+            for _, image_name, _ in entries
+        )
+        out.append(f"| {category} | {scripts} | {outputs} |")
     return "\n".join(out) + "\n"
 
 
 def render_collision_notes() -> str:
     if not COLLISION_NOTES:
         return ""
-    lines = ["> **Other variants (output filenames collide with siblings above):**"]
+    lines = ["> **Output collisions:** these scripts intentionally write the same filenames as a primary script above."]
     for hidden, twin in COLLISION_NOTES:
-        lines.append(f"> - [`{hidden}.m`]({hidden}.m) — same output as [`{twin}.m`]({twin}.m)")
+        lines.append(f"> - [`{hidden}.m`]({hidden}.m) uses the same output filenames as [`{twin}.m`]({twin}.m).")
     return "\n".join(lines) + "\n"
 
 
 def build_gallery() -> str:
     out = [GALLERY_HEADING, "",
-           "*Click the link under each figure to open the corresponding MATLAB script.*",
+           "A compact map of representative outputs in `imgs/`. Click any preview or script name to open the MATLAB source.",
+           "",
+           "_This section is generated by [`scripts/update_readme.py`](scripts/update_readme.py) and checked by CI._",
            ""]
-    for title, entries in GROUPS:
-        out.append(render_group(title, entries))
+    out.append(render_gallery_grid())
+    out.append(render_script_index())
     out.append(render_collision_notes())
     return "\n".join(out)
 
@@ -168,15 +192,14 @@ def read_readme_split() -> Tuple[str, str]:
     """Split the existing README into (header, footer) around the gallery.
 
     The new gallery is inserted between header and footer. Footer starts at
-    the Description heading (or the legacy '# Description' if still present)
+    the notes/description heading (or the legacy '# Description' if still present)
     so the user-written sections survive.
     """
     text = Path("README.md").read_text(encoding="utf-8")
 
     # Find the gallery heading (new or legacy form)
-    candidates = [GALLERY_HEADING, "## Generated Figures"]
     gallery_idx = -1
-    for c in candidates:
+    for c in LEGACY_GALLERY_HEADINGS:
         gallery_idx = text.find(c)
         if gallery_idx != -1:
             break
@@ -188,9 +211,8 @@ def read_readme_split() -> Tuple[str, str]:
 
     # Find next major heading after the gallery
     after = text[gallery_idx:]
-    footer_candidates = [DESCRIPTION_HEADING, "# Description"]
     footer_idx_local = -1
-    for c in footer_candidates:
+    for c in LEGACY_FOOTER_HEADINGS:
         idx = after.find(c)
         if idx != -1:
             footer_idx_local = idx
